@@ -19,7 +19,7 @@ import {cn} from "@/lib/utils";
 import {useQuery} from "@tanstack/react-query";
 import {AxiosInstance} from "@/utils/AxiosInstance";
 import {useAuthStore} from "@/store/AuthStore";
-import {useRoleStore} from "@/store/RoleStore";
+import {RoleType, useRoleStore} from "@/store/RoleStore";
 
 const frameworks = [
     {
@@ -50,7 +50,7 @@ interface RolesType {
     staff_role: string
 }
 
-export default function () {
+export default function SelectRole() {
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState("")
     const {authenticatedSession} = useAuthStore();
@@ -88,13 +88,13 @@ export default function () {
                 <Command>
                     <CommandList>
                         <CommandGroup>
-                            {Object.entries(roles ?? {}).map((role) => (
+                            {Object.entries(roles ?? {}).map((role: [string, RoleType]) => (
                                 role[1] != "none" && <CommandItem
                                     key={role[0]}
                                     value={role[1]}
-                                    onSelect={(currentValue) => {
+                                    onSelect={(currentValue: string) => {
                                         setValue(currentValue === currentRole ? "" : currentValue)
-                                        setCurrentRole(currentValue as any);
+                                        setCurrentRole(currentValue as RoleType);
                                         setOpen(false)
                                     }}
                                 >
