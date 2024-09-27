@@ -1,26 +1,42 @@
-import {User} from "@/types/User";
+import {UserType} from "@/types/UserType";
 import {create} from "zustand";
 import {persist} from "zustand/middleware";
+import {AuthenticatedSessionType} from "@/types/AuthenticatedSessionType";
 
 interface AuthStore {
-    authenticatedUser: User | null,
-    setAuthenticatedUser: (user: User) => void,
-    deleteAuthenticatedUser: () => void
+    authenticatedSession: AuthenticatedSessionType | null,
+    _hasHydrated: boolean,
+    setAuthenticatedSession: (session: AuthenticatedSessionType) => void,
+    setAuthenticatedUser: (user: UserType) => void,
+    deleteAuthenticatedSession: () => void,
 }
 
 export const useAuthStore = create<AuthStore>()(
     persist(
         (set) => ({
-            authenticatedUser: null,
-            setAuthenticatedUser: (user: User) => {
-                set({authenticatedUser: user});
+            authenticatedSession: null,
+            _hasHydrated: false,
+            setAuthenticatedSession: (session: AuthenticatedSessionType) => {
+                set({authenticatedSession: session});
             },
-            deleteAuthenticatedUser: () => {
-                set({authenticatedUser: null});
+            setAuthenticatedUser: (user: UserType) => {
+                set((state) => ({
+                    authenticatedSession: state.authenticatedSession ? {
+                        ...state.authenticatedSession, user: user
+                    } : null
+                }));
+            },
+            deleteAuthenticatedSession: () => {
+                set({authenticatedSession: null});
             }
         }),
         // TODO: implement a encrypted storage option
         {
-            name: "auth-storage"
+            name: "auth-storage",
+            onRehydrateStorage: () => (state) => {
+                if (state) {
+                    useAuthStore.setState({_hasHydrated: true})
+                }
+            }
         }
     ));

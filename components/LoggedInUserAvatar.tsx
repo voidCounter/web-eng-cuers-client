@@ -25,7 +25,7 @@ const LoggedInUserAvatar = React.forwardRef<HTMLDivElement, LoggedInUserAvatarPr
                                                                                           onClick = () => {
                                                                                           },
                                                                                       }, ref) => {
-    const {authenticatedUser} = useAuthStore();
+    const {authenticatedSession} = useAuthStore();
     return (
         <div ref={ref} className={cn(className, "bg-secondary rounded-md" +
             " cursor-pointer" +
@@ -40,9 +40,9 @@ const LoggedInUserAvatar = React.forwardRef<HTMLDivElement, LoggedInUserAvatarPr
                 {
                     showAvatar &&
                     <Avatar className={"h-8 w-8"}>
-                        <AvatarImage src={authenticatedUser?.avatarUrl ?? ""}/>
+                        {/*<AvatarImage src={authenticatedSession?user.avatarUrl ?? ""}/>*/}
                         <AvatarFallback
-                            className={"bg-foreground/20"}>{authenticatedUser?.name.toUpperCase()[0]}</AvatarFallback>
+                            className={"bg-foreground/20"}>{authenticatedSession?.user?.first_name.toUpperCase()[0] ?? "U"}</AvatarFallback>
                     </Avatar>
                 }
 
@@ -50,12 +50,12 @@ const LoggedInUserAvatar = React.forwardRef<HTMLDivElement, LoggedInUserAvatarPr
                 <div className={"flex flex-col justify-start items-start"}>
                     {
                         showName &&
-                        <h1 className={"font-medium text-sm"}>{authenticatedUser?.name}</h1>
+                        <h1 className={"font-medium text-sm text-start"}>{authenticatedSession?.user?.first_name ?? " " + " " + authenticatedSession?.user?.last_name ?? " "}</h1>
                     }
                     {
                         showUsername &&
                         <h3
-                            className="text-muted-foreground text-sm leading-none">@{authenticatedUser?.username ?? "username"}</h3>
+                            className="text-muted-foreground text-sm leading-none">@{authenticatedSession?.user?.email ?? " "}</h3>
 
                     }
                 </div>
