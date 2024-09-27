@@ -9,12 +9,3 @@ export const AxiosInstance = axios.create({
         "Authorization": `Bearer ${useAuthStore.getState().authenticatedSession?.session_id}`
     },
 });
-
-// AxiosInstance.interceptors.request.use(
-//     requestInterceptoronFulfilled, requestInterceptoronRejected
-// );
-//
-// // Axios Interceptor: Response Method
-// AxiosInstance.interceptors.response.use(
-//     (response) => response, responseInterceptoronRejected
-// );
