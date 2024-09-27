@@ -1,6 +1,6 @@
 import axios, {InternalAxiosRequestConfig} from 'axios';
 import {useAuthStore} from "@/store/AuthStore";
-import {User} from "@/types/User";
+import {User} from "@/types/UserType";
 
 // Reusable Request Interceptor
 export const requestInterceptoronFulfilled = (config: InternalAxiosRequestConfig) => {

@@ -20,25 +20,28 @@ import React, {useState} from "react";
 import {AxiosInstance} from "@/utils/AxiosInstance";
 import {useAuthStore} from "@/store/AuthStore";
 import {useRouter} from "next/navigation";
+import {useMutation} from "@tanstack/react-query";
+import {toast} from "sonner";
 
 export default function LoggedInUserMenu() {
-    const {deleteAuthenticatedUser} = useAuthStore();
+    const {deleteAuthenticatedSession} = useAuthStore();
 
     const router = useRouter()
 
-    async function logout() {
-        try {
-            const response = await AxiosInstance.post("/auth/logout");
-            if (response.status === 200) {
-                deleteAuthenticatedUser();
-                router.push("/");
-            }
-        } catch (error) {
-            console.error("Logout failed: ", error);
-            deleteAuthenticatedUser();
+    const {mutate: logout} = useMutation({
+        mutationFn: () => AxiosInstance.post("/logout"),
+        onSuccess: () => {
+            toast.success("Logged out successfully");
+            deleteAuthenticatedSession();
+            router.push("/");
+        },
+        onError: () => {
+            toast.error("Logout failed");
+            deleteAuthenticatedSession();
             router.push("/");
         }
-    }
+
+    })
 
     const [isSettingDialogOpen, setIsSettingDialogOpen] = useState(false)
 
@@ -80,7 +83,7 @@ export default function LoggedInUserMenu() {
                     <DropdownMenuItem className={"bg-destructive" +
                         " focus:bg-destructive text-background" +
                         " focus:text-background"}
-                                      onSelect={logout}>
+                                      onSelect={() => logout()}>
                         <LogOut className="mr-2 h-4 w-4"/>
                         <span>Log out</span>
                     </DropdownMenuItem>

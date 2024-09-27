@@ -16,6 +16,7 @@ export default function SidebarLayout({children}: {
     const toggleSidebar = () => {
         setSidebarOpen(!isSidebarOpen);
     }
+
     return (
         <div className="w-full h-full overflow-hidden">
             <div className="">

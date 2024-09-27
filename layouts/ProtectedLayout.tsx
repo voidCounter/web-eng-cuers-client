@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect} from "react";
+import React, {useEffect, useLayoutEffect} from "react";
 import {useAuthStore} from "@/store/AuthStore";
 import {usePathname, useRouter} from "next/navigation";
 
@@ -8,14 +8,13 @@ export default function ProtectedLayout({children}: {
 }) {
     const pathname = usePathname();
     const router = useRouter();
-    const {authenticatedUser} = useAuthStore();
+    const {authenticatedSession, _hasHydrated} = useAuthStore();
 
-    // useEffect(() => {
-    //     if (!authenticatedUser?.userId) {
-    //         router.push("/login");
-    //     }
-    // }, [pathname]);
-
+    useLayoutEffect(() => {
+        if (_hasHydrated && authenticatedSession?.session_id == null) {
+            router.push("/login");
+        }
+    }, [authenticatedSession])
     return (
         <div className={"w-full"}>
             {children}
