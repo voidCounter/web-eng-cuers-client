@@ -125,10 +125,6 @@ export default function Login() {
                         </div>
                     </form>
                 </Form>
-                    <Link
-                        href={"/register"}
-                        className={"mt-6 hover:underline active:underline"}>{`Don't have an account? `}<span
-                        className={"font-medium"}>Register</span></Link>
                     <h3 className={"mt-10 text-sm text-foreground/40 text-center"}>
                         By logging in, you agree to our <Link
                         href="/terms-of-service" className={"underline" +
