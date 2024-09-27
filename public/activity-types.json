@@ -1,0 +1,92 @@
+[
+  {
+    "exam_activity_type_id": 1,
+    "exam_activity_name": "প্রশ্নপত্র প্রণয়ন",
+    "exam_category": "কোর্স কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 2,
+    "exam_activity_name": "প্রশ্নপত্র অনুবাদ",
+    "exam_category": "কোর্স কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 3,
+    "exam_activity_name": "প্রশ্নপত্র সমীক্ষণ",
+    "exam_category": "সেমিস্টার কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 4,
+    "exam_activity_name": "উওরপত্র পরীক্ষণ",
+    "exam_category": "কোর্স কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 5,
+    "exam_activity_name": "ব্যবহারিক (পরীক্ষকের সম্মানী)",
+    "exam_category": "কোর্স কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 6,
+    "exam_activity_name": "মৌখিক পরীক্ষা",
+    "exam_category": "সেমিস্টার কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 7,
+    "exam_activity_name": "পরীক্ষক",
+    "exam_category": "কোর্স কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 8,
+    "exam_activity_name": "থিসিস গাইড/সুপারভিশন",
+    "exam_category": "সেমিস্টার কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 9,
+    "exam_activity_name": "টেবুলেশন",
+    "exam_category": "সেমিস্টার কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 10,
+    "exam_activity_name": "প্রশ্নপত্র লিখন",
+    "exam_category": "সেমিস্টার কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 11,
+    "exam_activity_name": "প্রশ্নপত্র ফটোকপি",
+    "exam_category": "সেমিস্টার কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 12,
+    "exam_activity_name": "গ্রেডশিট লিখন",
+    "exam_category": "সেমিস্টার কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 13,
+    "exam_activity_name": "গ্রেডশিট যাচাইকরণ",
+    "exam_category": "সেমিস্টার কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 14,
+    "exam_activity_name": "পরীক্ষা কমিটির সভাপতির সম্মানী",
+    "exam_category": "সেমিস্টার কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 15,
+    "exam_activity_name": "পরীক্ষা কমিটির সদস্যপ্রতি সম্মানী",
+    "exam_category": "সেমিস্টার কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 16,
+    "exam_activity_name": "পরিদর্শক সম্মানী (প্রতি টিউটোরিয়াল)",
+    "exam_category": "কোর্স কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 17,
+    "exam_activity_name": "প্রধান পরিদর্শক সম্মানী (প্রতি ঘণ্টা)",
+    "exam_category": "কোর্স কার্যকলাপ"
+  },
+  {
+    "exam_activity_type_id": 18,
+    "exam_activity_name": "পরিদর্শক সম্মানী (প্রতি ঘণ্টা)",
+    "exam_category": "কোর্স কার্যকলাপ"
+  }
+]
