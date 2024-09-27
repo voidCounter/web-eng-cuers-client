@@ -1,10 +1,4 @@
-import {
-    BookOpenText, BookOpenTextIcon, LayoutListIcon,
-    LightbulbIcon, ListTodoIcon, LucideIcon,
-    NewspaperIcon,
-    NotebookIcon,
-    RouteIcon, SparkleIcon
-} from "lucide-react";
+import {BookOpenTextIcon, LayoutListIcon} from "lucide-react";
 import {NavConfigType} from "@/types/NavTypes";
 import {RoleType} from "@/store/RoleStore";
 
