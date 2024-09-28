@@ -14,6 +14,7 @@ import {usePathname} from "next/navigation";
 export default function NavItem(navItem: NavItemType) {
     const pathName = usePathname();
     const isActive = pathName.startsWith(navItem.path);
+    console.log(isActive, pathName, navItem.path);
 
     if (navItem.subItems) {
         return (

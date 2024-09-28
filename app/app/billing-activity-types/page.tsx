@@ -3,40 +3,34 @@ import {
     columns,
     ExamActivityType
 } from "@/app/app/billing-activity-types/columns";
-import {DataTable} from "@/app/app/billing-activity-types/data-table";
-import {AxiosInstance} from "@/utils/AxiosInstance";
-import {useQuery} from "@tanstack/react-query";
 import Loading from "@/components/loading";
 import {toast} from "sonner";
+import {useTable} from "@/hooks/useTable";
+import {DataTable} from "@/components/ui/data-table";
+import GenericTable from "@/components/GenericTablePage";
 
 export default function BillingActivityTypes() {
-
+    const newExamActivityType: ExamActivityType = {
+        exam_activity_name: "",
+        exam_activity_type_id: -1,
+        exam_category: ""
+    }
     const {
         data,
         isLoading,
-        isSuccess,
+        createMutation, updateMutation, deleteMutation,
         isError
-    } = useQuery({
-        queryKey: ["billing-activity-types"],
-        queryFn: async (): Promise<ExamActivityType[]> => {
-            const response = await fetch("/activity-types.json");
-            return response.json();
-        }
-    });
-    if (isLoading) {
-        return <Loading></Loading>
-    }
-    if (isSuccess) {
-        console.log(data);
-    }
-    if (isError) {
-        toast.error("Failed to fetch billing activity types");
-    }
+    } = useTable<ExamActivityType>("/cuers/exam-activity-type");
+
     return (
         <div>
             {
                 data &&
-                <DataTable columns={columns} data={data}/>
+                <GenericTable columns={columns} newRow={newExamActivityType}
+                              data={data} isLoading={isLoading}
+                              isError={isError} createMutation={createMutation}
+                              updateMutation={updateMutation}
+                              deleteMutation={deleteMutation}/>
             }
         </div>
     );

@@ -9,13 +9,12 @@ import TableCellCmp from "@/components/table/TableCell";
 import EditCellCmp from "@/components/table/EditCell";
 
 
-export type ExamActivityType = {
-    exam_activity_type_id: number;
-    exam_activity_name: string;
-    exam_category: string;
+export type BillSectorType = {
+    bill_sector_id: number;
+    bill_sector_name: string;
 };
 
-export const columns: ColumnDef<ExamActivityType>[] = [
+export const columns: ColumnDef<BillSectorType>[] = [
     {
         id: "select",
         header: ({table}) => (
@@ -39,12 +38,12 @@ export const columns: ColumnDef<ExamActivityType>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "exam_activity_name",
+        accessorKey: "bill_sector_name",
         header: ({column}) => {
             return (
                 <Button variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}>
-                    Exam Activity Name
+                    Bill Sector Name
                     <ArrowUpDown className={"ml-2 h-4 w-4"}/>
                 </Button>
             );
@@ -53,28 +52,6 @@ export const columns: ColumnDef<ExamActivityType>[] = [
         meta: {
             type: "text",
             language: "Bengali",
-        }
-    },
-    {
-        accessorKey: "exam_category",
-        header: ({column}) => {
-            return (
-                <Button variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}>
-                    Exam Category
-                    <ArrowUpDown className={"ml-2 h-4 w-4"}/>
-                </Button>
-            );
-        },
-        cell: TableCellCmp,
-        meta: {
-            type: "select",
-            options: [
-                {value: "কোর্স কার্যকলাপ", label: "কোর্স কার্যকলাপ"},
-                {value: "সেমিস্টার কার্যকলাপ", label: "সেমিস্টার কার্যকলাপ"}
-            ],
-            placeholder: "Select Exam Activity Category",
-            language: "Bengali"
         }
     },
     {

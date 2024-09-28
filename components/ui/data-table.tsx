@@ -2,47 +2,53 @@
 
 import {
     ColumnDef,
-    getCoreRowModel, getFilteredRowModel,
-    getPaginationRowModel, getSortedRowModel, SortingState, VisibilityState
+    getCoreRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    SortingState,
+    VisibilityState
 } from "@tanstack/table-core";
 import {
-    flexRender,
     ColumnFiltersState,
+    flexRender,
     useReactTable
 } from "@tanstack/react-table";
 import {
     Table,
-    TableBody, TableCell,
+    TableBody,
+    TableCell,
     TableHead,
     TableHeader,
     TableRow
 } from "@/components/ui/table";
-import {Button} from "@/components/ui/button";
 import {useState} from "react";
 import {Input} from "@/components/ui/input";
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import {Settings2Icon} from "lucide-react";
 import {DataTablePagination} from "@/components/ui/DataTablePagination";
 import {DataTableViewOptions} from "@/components/ui/DataTableViewOptions";
+import FooterCell from "@/components/table/FooterCell";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
-    data: TData[],
+    newRow: TData,
+    defaultData: TData[],
+    onCreate: (newRow: TData) => Promise<void>,
+    onUpdate: (updatedRow: TData) => Promise<void>
+    onDelete: (row: TData) => Promise<void>
 }
 
 export function DataTable<TData, TValue>({
                                              columns,
-                                             data
+                                             defaultData,
+                                             onUpdate, onCreate, onDelete,
+                                             newRow,
                                          }: DataTableProps<TData, TValue>) {
+    const [data, setData] = useState(() => [...defaultData]);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
+    const [originalData, setOriginalData] = useState(() => [...defaultData]);
 
     const [editedRows, setEditedRows] = useState({});
 
@@ -51,6 +57,7 @@ export function DataTable<TData, TValue>({
         getPaginationRowModel: getPaginationRowModel(),
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
+        autoResetPageIndex: false,
         getFilteredRowModel: getFilteredRowModel(),
         onColumnVisibilityChange: setColumnVisibility,
         onRowSelectionChange: setRowSelection,
@@ -60,28 +67,62 @@ export function DataTable<TData, TValue>({
             columnFilters, columnVisibility, rowSelection
         },
         meta: {
-            editedRows, setEditedRows,
-            updateData: (rowIndex:number, columnId: string, value:string) => {
-            }
+            addRow: async (newRow: TData) => {
+                const setFunc = (old: TData[]) => [...old, newRow];
+                // table.lastPage();
+                await onCreate(newRow);
+                setData(setFunc);
+                setOriginalData(setFunc);
+            },
+            removeRow: async (rowIndex: number) => {
+                await onDelete(data[rowIndex]);
+            },
+            revertData: (rowIndex: number) => {
+                setData((old) =>
+                    old.map((row, index) => index == rowIndex ? originalData[rowIndex] : row));
+            },
+            updateRow: async (rowIndex: number) => {
+                await onUpdate(data[rowIndex]);
+            },
+            removeSelectedRows: (selectedRows: number[]) => {
+                const setFilterFunc = (old: TData[]) => old.filter((_row, index) => !selectedRows.includes(index));
+                setData(setFilterFunc);
+                setOriginalData(setFilterFunc);
+            },
+            updateData: (rowIndex: number, columnId: string, value: string) => {
+                setData((oldData) =>
+                    oldData.map((row, index) => {
+                        if (index == rowIndex) {
+                            return {
+                                ...oldData[rowIndex], [columnId]: value
+                            };
+                        }
+                        return row;
+                    }))
+            },
+            editedRows, setEditedRows
         }
-
     })
 
     return (
         <div>
-            <div className="flex flex-row items-center py-4">
-                <Input
-                    placeholder="Filter Exam Activity Names"
-                    value={(table.getColumn("exam_activity_name")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("exam_activity_name")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm"
-                />
-                <DataTableViewOptions table={table}/>
+            <div
+                className="flex flex-row gap-2 items-center justify-between py-4">
+                {/*<Input*/}
+                {/*    placeholder="Filter Exam Activity Names"*/}
+                {/*    value={(table.getColumn("exam_activity_name")?.getFilterValue() as string) ?? ""}*/}
+                {/*    onChange={(event) =>*/}
+                {/*        table.getColumn("exam_activity_name")?.setFilterValue(event.target.value)*/}
+                {/*    }*/}
+                {/*    className="max-w-sm"*/}
+                {/*/>*/}
+                <div className={"flex flex-row gap-2 justify-between w-full"}>
+                    <FooterCell table={table} newRow={newRow}/>
+                    <DataTableViewOptions table={table}/>
+                </div>
             </div>
-            <div className={"rounded-md border"}>
-                <Table>
+            <div className={"rounded-lg border"}>
+                <Table className={""}>
                     <TableHeader className={"bg-foreground/5"}>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
@@ -107,7 +148,8 @@ export function DataTable<TData, TValue>({
                                     data-state={row.getIsSelected() && "selected"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
+                                        <TableCell key={cell.id}
+                                                   className={"text-base"}>
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}
@@ -125,6 +167,7 @@ export function DataTable<TData, TValue>({
                 </Table>
             </div>
             <DataTablePagination table={table} className={"mt-4"}/>
+
             <div className={"py-16"}></div>
         </div>
     );
