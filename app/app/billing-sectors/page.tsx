@@ -2,6 +2,7 @@
 import {useTable} from "@/hooks/useTable";
 import GenericTable from "@/components/GenericTablePage";
 import {BillSectorType, columns} from "@/app/app/billing-sectors/columns";
+import Loading from "@/components/loading";
 
 export default function BillingSectors() {
     const newExamActivityType: BillSectorType = {
@@ -13,7 +14,11 @@ export default function BillingSectors() {
         isLoading,
         createMutation, updateMutation, deleteMutation,
         isError
-    } = useTable<BillSectorType>("/bill-sectors.json");
+    } = useTable<BillSectorType>("/cuers/exam-bill-sectors");
+
+    if (isLoading) {
+        return <Loading text={"Loading bill sectors"}/>
+    }
 
     return (
         <div>

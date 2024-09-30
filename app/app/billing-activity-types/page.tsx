@@ -12,7 +12,7 @@ import GenericTable from "@/components/GenericTablePage";
 export default function BillingActivityTypes() {
     const newExamActivityType: ExamActivityType = {
         exam_activity_name: "",
-        exam_activity_type_id: -1,
+        exam_activity_type_id: 56,
         exam_category: ""
     }
     const {
@@ -21,6 +21,9 @@ export default function BillingActivityTypes() {
         createMutation, updateMutation, deleteMutation,
         isError
     } = useTable<ExamActivityType>("/cuers/exam-activity-type");
+    if (isLoading) {
+        return <Loading text={"Loading billing activity types"}/>
+    }
 
     return (
         <div>

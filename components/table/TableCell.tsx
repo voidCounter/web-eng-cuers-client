@@ -1,5 +1,5 @@
 "use client";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Input} from "@/components/ui/input";
 import {CellContext} from "@tanstack/table-core";
 import {
@@ -13,11 +13,10 @@ import {cn} from "@/lib/utils";
 import {kalpurush} from "@/utils/fonts";
 import {useQuery} from "@tanstack/react-query";
 import {AxiosInstance} from "@/utils/AxiosInstance";
+import {QueryKey} from "@/utils/queryKeys";
+import {Option} from "@/types/option";
+import {handleSelectOptions} from "@/utils/SelectOptionsHandler";
 
-type Option = {
-    label: string,
-    value: string
-}
 
 export default function TableCellCmp(props: CellContext<any, any>) {
     // handling different types:
@@ -25,24 +24,38 @@ export default function TableCellCmp(props: CellContext<any, any>) {
     const columnMeta = column.columnDef.meta as {
         type: string,
         options?: Option[],
-        fetchOptionsInfo?: { fetch_url: string },
+        fetchOptionsInfo?: { fetch_url: string, key: QueryKey },
         placeholder?: string,
         language?: "Bengali" | "English"
     };
 
-    const {data: fetchedOptions, isSuccess} = useQuery({
-        queryKey: [columnMeta.fetchOptionsInfo?.fetch_url],
+    const [options, setOptions] = useState<Option[]>(columnMeta.options ?? []);
+
+    const {
+        data: fetchedOptionData,
+        isSuccess: selectOptionsFetched
+    } = useQuery({
+        queryKey: [columnMeta.fetchOptionsInfo?.key],
         queryFn: async () => {
             if (columnMeta.fetchOptionsInfo?.fetch_url.endsWith(".json")) {
                 return await fetch(columnMeta.fetchOptionsInfo?.fetch_url).then(res => res.json());
             }
             const response = await AxiosInstance.get(columnMeta.fetchOptionsInfo?.fetch_url ?? "");
-            return response.data;
+            return response?.data?.data;
         },
-        enabled: !!columnMeta.fetchOptionsInfo?.fetch_url
+        enabled: false
     })
+    if (selectOptionsFetched) {
+        const key = columnMeta.fetchOptionsInfo?.key;
 
-    const [options, setOptions] = useState<Option[]>(columnMeta.options ?? []);
+        if (Object.values(QueryKey).includes(key as QueryKey)) {
+            const selectOptions = handleSelectOptions(key as QueryKey, fetchedOptionData);
+            setOptions(selectOptions);
+        } else {
+            console.warn(`Invalid query key: ${key}`);
+        }
+    }
+
 
     const initialValue = getValue();
     const [value, setValue] = useState(initialValue);
@@ -82,7 +95,7 @@ export default function TableCellCmp(props: CellContext<any, any>) {
                                 options.map((option) => <SelectItem
                                     key={option.value}
                                     className={cn(columnMeta?.language == "Bengali" && kalpurush.className)}
-                                    value={option.value}>{option.label}</SelectItem>)
+                                    value={option.value.toString()}>{option.label}</SelectItem>)
                             }
                         </SelectContent>
                     </Select>

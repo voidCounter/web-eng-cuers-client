@@ -20,7 +20,7 @@ export default function BillingActivityTypes() {
         isLoading,
         createMutation, updateMutation, deleteMutation,
         isError
-    } = useTable<BillingRuleType>("/billing-rules.json");
+    } = useTable<BillingRuleType>("/cuers/exam-activity");
 
     return (
         <div>

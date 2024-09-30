@@ -26,43 +26,51 @@ const GenericTable = <T, >({
                                deleteMutation,
                            }: GenericTableProps<T>) => {
 
-    const handleCreate = async (newRow: T) => {
+    const handleCreate = async (newRow: T): Promise<T | undefined> => {
         try {
             const {mutateAsync, isSuccess} = createMutation;
             console.log(newRow);
-            await mutateAsync(newRow);
-            if (isSuccess) {
-                toast.success("Row created successfully!");
-            }
+            return await mutateAsync(newRow, {
+                onSuccess: () => {
+                    toast.success("Row created successfully!");
+                    return newRow;
+                }
+            });
         } catch (error) {
+            console.log(error);
             toast.error("Failed to create row");
         }
+        return undefined;
     };
 
-    const handleUpdate = async (updatedRow: T) => {
+    const handleUpdate = async (updatedRow: T): Promise<undefined | T> => {
         try {
-            const {mutateAsync, isSuccess} = updateMutation;
-            console.log(updatedRow);
-            await mutateAsync({updatedRow});
-            if (isSuccess) {
-                toast.success("Row updated successfully!");
-            }
+            const {mutateAsync} = updateMutation;
+            return await mutateAsync({updatedRow}, {
+                onSuccess: () => {
+                    toast.success("Row updated successfully!");
+                    return updatedRow;
+                }
+            });
         } catch (error) {
             toast.error("Failed to update row");
         }
+        return undefined;
     };
 
-    const handleDelete = async (row: T) => {
+    const handleDelete = async (row: T): Promise<T | undefined> => {
         try {
-            const {mutateAsync, isSuccess} = deleteMutation;
-            console.log(row);
-            await mutateAsync(row);  // You might need to pass the `id` here based on your API
-            if (isSuccess) {
-                toast.success("Row deleted successfully!");
-            }
+            const {mutateAsync} = deleteMutation;
+            return await mutateAsync(row, {
+                onSuccess: () => {
+                    toast.success("Row deleted successfully!");
+                    return row;
+                }
+            });
         } catch (error) {
             toast.error("Failed to delete row");
         }
+        return undefined;
     };
 
     if (isLoading) {

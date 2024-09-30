@@ -22,19 +22,20 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Input} from "@/components/ui/input";
 import {DataTablePagination} from "@/components/ui/DataTablePagination";
 import {DataTableViewOptions} from "@/components/ui/DataTableViewOptions";
 import FooterCell from "@/components/table/FooterCell";
+import {all} from "axios";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     newRow: TData,
     defaultData: TData[],
-    onCreate: (newRow: TData) => Promise<void>,
-    onUpdate: (updatedRow: TData) => Promise<void>
-    onDelete: (row: TData) => Promise<void>
+    onCreate: (newRow: TData) => Promise<TData | undefined>,
+    onUpdate: (updatedRow: TData) => Promise<TData | undefined>
+    onDelete: (row: TData) => Promise<TData | undefined>
 }
 
 export function DataTable<TData, TValue>({
@@ -49,6 +50,11 @@ export function DataTable<TData, TValue>({
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const [originalData, setOriginalData] = useState(() => [...defaultData]);
+
+    useEffect(() => {
+        const allMeta = columns.map((column) => column.meta);
+        console.log(allMeta);
+    }, []);
 
     const [editedRows, setEditedRows] = useState({});
 
@@ -70,24 +76,47 @@ export function DataTable<TData, TValue>({
             addRow: async (newRow: TData) => {
                 const setFunc = (old: TData[]) => [...old, newRow];
                 // table.lastPage();
-                await onCreate(newRow);
-                setData(setFunc);
-                setOriginalData(setFunc);
+                const addedRow = await onCreate(newRow);
+                if (addedRow != undefined) {
+                    setData(setFunc);
+                    setOriginalData(setFunc);
+                }
             },
             removeRow: async (rowIndex: number) => {
-                await onDelete(data[rowIndex]);
+                console.log("To be removed: ", data[rowIndex]);
+                const row = await onDelete(data[rowIndex]);
+                if (row != undefined) {
+                    const filterFunc = (old: TData[]) => old.filter((_row, index) => index != rowIndex);
+                    setData(filterFunc);
+                    setOriginalData(filterFunc);
+                }
             },
             revertData: (rowIndex: number) => {
                 setData((old) =>
                     old.map((row, index) => index == rowIndex ? originalData[rowIndex] : row));
             },
             updateRow: async (rowIndex: number) => {
-                await onUpdate(data[rowIndex]);
+                const updatedRow = await onUpdate(data[rowIndex]);
+                console.log("After updating: ", updatedRow);
+                if (updatedRow != undefined) {
+                    const updateFunc = (old: TData[]) => old.map((row, index) => index == rowIndex ? data[rowIndex] : row);
+                    setOriginalData(updateFunc);
+                }
             },
             removeSelectedRows: (selectedRows: number[]) => {
-                const setFilterFunc = (old: TData[]) => old.filter((_row, index) => !selectedRows.includes(index));
-                setData(setFilterFunc);
-                setOriginalData(setFilterFunc);
+                // TODO: Needs fix more multiple deletion
+                const filterFunc = (rowIndex: number) => (old: TData[]) => old.filter((_row, index) => index != rowIndex);
+                selectedRows.map(async (index) => {
+                        const deleted = await onDelete(data[index])
+                        if (deleted != undefined) {
+                            setData(filterFunc(index));
+                            setOriginalData(filterFunc(index));
+                        }
+                    }
+                );
+                // check if all deleted successfully, if not deleted
+                // successfully on item will be undefined
+                //  if all get successfully deleted
             },
             updateData: (rowIndex: number, columnId: string, value: string) => {
                 setData((oldData) =>
@@ -103,7 +132,6 @@ export function DataTable<TData, TValue>({
             editedRows, setEditedRows
         }
     })
-
     return (
         <div>
             <div
@@ -167,7 +195,6 @@ export function DataTable<TData, TValue>({
                 </Table>
             </div>
             <DataTablePagination table={table} className={"mt-4"}/>
-
             <div className={"py-16"}></div>
         </div>
     );

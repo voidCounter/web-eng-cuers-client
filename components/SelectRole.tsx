@@ -35,10 +35,8 @@ export default function SelectRole() {
         refetchOnMount: false,
     })
     if (rolesFetched) {
-        console.log(roles);
     }
 
-    console.log("current role", currentRole);
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>

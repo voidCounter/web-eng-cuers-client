@@ -11,6 +11,10 @@ async function fetchTableData(url: string) {
 }
 
 async function createRow(url: string, newRow: any) {
+    console.log("To be added row is: ", newRow);
+    console.log("The url is: ", url);
+    // TODO: Need to pass things without id?
+
     const response = await AxiosInstance.post(url, newRow);
     return response.data;
 }
@@ -25,8 +29,11 @@ async function updateRow(url: string, updatedRow: any) {
     primary_key: value
 }
  */
-async function deleteRow(url: string, idofRow: any) {
-    const response = await AxiosInstance.delete(url, idofRow);
+async function deleteRow(url: string, row: any) {
+    console.log("The row to be deleted in useTable: ", row);
+    const response = await AxiosInstance.delete(url, {
+        data: row
+    });
     return response.data;
 }
 
@@ -57,17 +64,11 @@ export function useTable<T>(url: string) {
         mutationFn: ({updatedRow}: {
             updatedRow: T
         }) => updateRow(url, updatedRow),
-        onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: [url]});
-        }
     })
 
 
     const deleteMutation = useMutation({
-        mutationFn: (id: number) => deleteRow(url, id),
-        onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: [url]});
-        }
+        mutationFn: (row: T) => deleteRow(url, row),
     })
 
     return {

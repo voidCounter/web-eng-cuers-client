@@ -9,6 +9,7 @@ import TableCellCmp from "@/components/table/TableCell";
 import EditCellCmp from "@/components/table/EditCell";
 import {AxiosInstance} from "@/utils/AxiosInstance";
 import {BillSectorType} from "@/app/app/billing-sectors/columns";
+import {QueryKey} from "@/utils/queryKeys";
 
 
 export type BillingRuleType = {
@@ -60,7 +61,10 @@ export const columns: ColumnDef<BillingRuleType>[] = [
         meta: {
             type: "select",
             language: "Bengali",
-            fetchOptionsInfo: {fetch_url: "/bill-sectors.json"}
+            fetchOptionsInfo: {
+                fetch_url: process.env.NEXT_PUBLIC_CUERS_EXAM_BILL_SECTORS,
+                key: QueryKey.BILL_SECTORS
+            }
         }
     },
     {
@@ -78,6 +82,10 @@ export const columns: ColumnDef<BillingRuleType>[] = [
         meta: {
             type: "text",
             language: "Bengali",
+            fetchOptionsInfo: {
+                fetch_url: process.env.NEXT_PUBLIC_CUERS_EXAM_ACTIVITY_TYPE,
+                key: QueryKey.ACTIVITY_TYPE
+            }
         }
     },
 
