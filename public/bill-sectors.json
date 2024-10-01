@@ -1,0 +1,94 @@
+[
+  {
+    "bill_sector_id": 1,
+    "bill_sector_name": "অনার্স"
+  },
+  {
+    "bill_sector_id": 2,
+    "bill_sector_name": "টিউটোরিয়াল"
+  },
+  {
+    "bill_sector_id": 3,
+    "bill_sector_name": "ব্যবহারিক"
+  },
+  {
+    "bill_sector_id": 4,
+    "bill_sector_name": "স্ক্রুটিনী"
+  },
+  {
+    "bill_sector_id": 5,
+    "bill_sector_name": "ইন্ডাস্ট্রিয়াল ট্যুর"
+  },
+  {
+    "bill_sector_id": 6,
+    "bill_sector_name": "প্রজেক্ট রিপোর্ট"
+  },
+  {
+    "bill_sector_id": 7,
+    "bill_sector_name": "ব্যবহারিক নোট বুক"
+  },
+  {
+    "bill_sector_id": 8,
+    "bill_sector_name": "সব খাতসমূহ"
+  },
+  {
+    "bill_sector_id": 9,
+    "bill_sector_name": "মাস্টার্স"
+  },
+  {
+    "bill_sector_id": 10,
+    "bill_sector_name": "অনার্স/মাস্টার্স"
+  },
+  {
+    "bill_sector_id": 11,
+    "bill_sector_name": "এম.ফিল"
+  },
+  {
+    "bill_sector_id": 12,
+    "bill_sector_name": "পি-এইচ.ডি"
+  },
+  {
+    "bill_sector_id": 13,
+    "bill_sector_name": "মাস্টার্স (প্রজেক্ট/থিসিস)"
+  },
+  {
+    "bill_sector_id": 14,
+    "bill_sector_name": "এম.ফিল থিসিস"
+  },
+  {
+    "bill_sector_id": 15,
+    "bill_sector_name": "পি-এইচ.ডি থিসিস"
+  },
+  {
+    "bill_sector_id": 16,
+    "bill_sector_name": "অনার্স (১ম-৩য় বর্ষ)"
+  },
+  {
+    "bill_sector_id": 17,
+    "bill_sector_name": "অনার্স (৪র্থ বর্ষ)"
+  },
+  {
+    "bill_sector_id": 18,
+    "bill_sector_name": "কম্পিউটার"
+  },
+  {
+    "bill_sector_id": 19,
+    "bill_sector_name": "হাতে লেখা"
+  },
+  {
+    "bill_sector_id": 20,
+    "bill_sector_name": "টার্মিনাল"
+  },
+  {
+    "bill_sector_id": 21,
+    "bill_sector_name": "প্রজেক্ট রিপোর্ট/ইন্টার্নশিপ রিপোর্ট"
+  },
+  {
+    "bill_sector_id": 22,
+    "bill_sector_name": "এম.ফিল/পি-এইচ.ডি"
+  },
+  {
+    "bill_sector_id": 23,
+    "bill_sector_name": "সার্টিফিকেট কোর্স"
+  }
+]

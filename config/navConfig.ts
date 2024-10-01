@@ -1,10 +1,4 @@
-import {
-    BookOpenText, BookOpenTextIcon, LayoutListIcon,
-    LightbulbIcon, ListTodoIcon, LucideIcon,
-    NewspaperIcon,
-    NotebookIcon,
-    RouteIcon, SparkleIcon
-} from "lucide-react";
+import {BookOpenTextIcon, Grid2x2CheckIcon, LayoutListIcon} from "lucide-react";
 import {NavConfigType} from "@/types/NavTypes";
 import {RoleType} from "@/store/RoleStore";
 
@@ -15,12 +9,17 @@ export const generateNavItems = (role: RoleType): NavConfigType => {
         // case "registrar":
         //     return registrarNavItems;
         default:
-            return defaultNavItems;
+            return chairmanNavItems;
     }
 }
 
 export const chairmanNavItems: NavConfigType = {
     navItems: [
+        {
+            label: "Manage billing sectors",
+            icon: Grid2x2CheckIcon,
+            path: "/app/billing-sectors",
+        },
         {
             label: "Manage Activity Types",
             icon: LayoutListIcon,
@@ -34,19 +33,5 @@ export const chairmanNavItems: NavConfigType = {
     ]
 }
 
-export const defaultNavItems: NavConfigType = {
-    navItems: [
-        {
-            label: "Activity types",
-            icon: LayoutListIcon,
-            path: "/app/activitytypes",
-        },
-        {
-            label: "Rule book",
-            icon: BookOpenTextIcon,
-            path: "/app/rule-book",
-        },
-    ]
-}
 
 export default chairmanNavItems;

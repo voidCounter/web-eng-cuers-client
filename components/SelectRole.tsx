@@ -19,42 +19,14 @@ import {cn} from "@/lib/utils";
 import {useQuery} from "@tanstack/react-query";
 import {AxiosInstance} from "@/utils/AxiosInstance";
 import {useAuthStore} from "@/store/AuthStore";
-import {RoleType, useRoleStore} from "@/store/RoleStore";
-
-const frameworks = [
-    {
-        value: "next.js",
-        label: "Next.js",
-    },
-    {
-        value: "sveltekit",
-        label: "SvelteKit",
-    },
-    {
-        value: "nuxt.js",
-        label: "Nuxt.js",
-    },
-    {
-        value: "remix",
-        label: "Remix",
-    },
-    {
-        value: "astro",
-        label: "Astro",
-    },
-]
-
-interface RolesType {
-    cec_roles: string
-    evaluator_role: string
-    staff_role: string
-}
+import {RolesType, RoleType, useRoleStore} from "@/store/RoleStore";
 
 export default function SelectRole() {
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState("")
     const {authenticatedSession} = useAuthStore();
 
+    const {currentRole, setCurrentRole} = useRoleStore();
     const {data: roles, isSuccess: rolesFetched} = useQuery({
         queryKey: ["roles", authenticatedSession?.user?.user_id],
         queryFn: (): Promise<RolesType> => AxiosInstance.get("/cuers").then((response) => response.data.roles),
@@ -63,11 +35,8 @@ export default function SelectRole() {
         refetchOnMount: false,
     })
     if (rolesFetched) {
-        console.log(roles);
     }
 
-    const {currentRole, setCurrentRole} = useRoleStore();
-    console.log("current role", currentRole);
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>

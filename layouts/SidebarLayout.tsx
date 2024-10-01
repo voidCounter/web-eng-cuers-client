@@ -48,8 +48,8 @@ export default function SidebarLayout({children}: {
                     <div
                         className="overflow-hidden w-full flex justify-center min-h-screen">
                         <div
-                            className={" w-full px-3 md:w-[700px] md:px-8" +
-                                " lg:w-[1100px]" +
+                            className={" w-full px-3 md:w-[800px] md:px-8" +
+                                " lg:w-[1200px]" +
                                 " flex " +
                                 " justify-center overflow-y-scroll h-screen" +
                                 " no-scrollbar"}>

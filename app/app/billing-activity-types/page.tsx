@@ -1,15 +1,40 @@
 "use client";
-import {useQuery} from "@tanstack/react-query";
-import {Axios} from "axios";
-import {AxiosInstance} from "@/utils/AxiosInstance";
-import {ExamActivityType} from "@/types/ActiviityTypes";
+import {
+    columns,
+    ExamActivityType
+} from "@/app/app/billing-activity-types/columns";
+import Loading from "@/components/loading";
+import {toast} from "sonner";
+import {useTable} from "@/hooks/useTable";
+import {DataTable} from "@/components/ui/data-table";
+import GenericTable from "@/components/GenericTablePage";
 
 export default function BillingActivityTypes() {
-    const {} = useQuery({
-        queryKey: ["exam-activity"],
-        queryFn: (): Promise<ExamActivityType[]> => AxiosInstance.get("./activity-types.json").then((response) => response.data)
-    })
+    const newExamActivityType: ExamActivityType = {
+        exam_activity_name: "",
+        exam_activity_type_id: 56,
+        exam_category: ""
+    }
+    const {
+        data,
+        isLoading,
+        createMutation, updateMutation, deleteMutation,
+        isError
+    } = useTable<ExamActivityType>("/cuers/exam-activity-type");
+    if (isLoading) {
+        return <Loading text={"Loading billing activity types"}/>
+    }
+
     return (
-        <div>Show activity-type table</div>
+        <div>
+            {
+                data &&
+                <GenericTable columns={columns} newRow={newExamActivityType}
+                              data={data} isLoading={isLoading}
+                              isError={isError} createMutation={createMutation}
+                              updateMutation={updateMutation}
+                              deleteMutation={deleteMutation}/>
+            }
+        </div>
     );
 }
