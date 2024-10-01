@@ -1,5 +1,5 @@
 "use client";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Input} from "@/components/ui/input";
 import {CellContext} from "@tanstack/table-core";
 import {
@@ -31,15 +31,19 @@ export default function TableCellCmp(props: CellContext<any, any>) {
     };
 
     const {options} = useOptionStore();
-    const [passedOptions, setPassedOptions] = useState<OptionType[]>(() => {
-        if (columnMeta.options) return columnMeta.options;
-        if (columnMeta?.fetchOptionsInfo?.key) {
-            if (options[columnMeta.fetchOptionsInfo?.key]) {
-                return options[columnMeta.fetchOptionsInfo?.key];
+    const [passedOptions, setPassedOptions] = useState<OptionType[]>([]);
+
+    useEffect(() => {
+        setPassedOptions(() => {
+            if (columnMeta.options) return columnMeta.options;
+            if (columnMeta?.fetchOptionsInfo?.key) {
+                if (options[columnMeta.fetchOptionsInfo?.key]) {
+                    return options[columnMeta.fetchOptionsInfo?.key];
+                }
             }
-        }
-        return [];
-    });
+            return [];
+        });
+    }, [options]);
 
     const initialValue = getValue();
     const [value, setValue] = useState(initialValue);
@@ -67,7 +71,7 @@ export default function TableCellCmp(props: CellContext<any, any>) {
                 }}
                               onBlur={onBlur}/>
             } else if (columnMeta.type == "select") {
-                // TODO: Instead of select use combobox.
+                // TODO: Instead of select use
                 return (
                     <Select onValueChange={(value) => onSelectChange(value)}
                             value={value.toString()}>

@@ -28,10 +28,10 @@ import {DataTablePagination} from "@/components/ui/DataTablePagination";
 import {DataTableViewOptions} from "@/components/ui/DataTableViewOptions";
 import FooterCell from "@/components/table/FooterCell";
 import {all} from "axios";
-import {useQuery} from "@tanstack/react-query";
-import {useFetchData} from "@/hooks/useFetchData";
+import {useQueries, useQuery} from "@tanstack/react-query";
 import {convertToQueryKey, QueryKey} from "@/utils/queryKeys";
 import {handleSelectOptions} from "@/utils/SelectOptionsHandler";
+import {AxiosInstance} from "@/utils/AxiosInstance";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -56,24 +56,28 @@ export function DataTable<TData, TValue>({
     const [originalData, setOriginalData] = useState(() => [...defaultData]);
 
 
-    const allMeta = columns.map((column) => column.meta);
-    const fetchUrls = allMeta.filter((meta) => meta?.fetchOptionsInfo != undefined);
-    fetchUrls.map((meta) => {
-        if (meta?.fetchOptionsInfo) {
-            const {
-                data: fetchedData,
-                isLoading: isFetching,
-                isSuccess: isDataFetched,
-                refetch: refetchData
-            } = useFetchData(meta?.fetchOptionsInfo?.key, meta?.fetchOptionsInfo?.fetch_url);
-            refetchData().then((data) => {
-                if (isDataFetched) {
-                    handleSelectOptions(meta?.fetchOptionsInfo?.key!, data.data);
-                }
-            });
-        }
-    });
+    const referencedTables = columns
+        .filter((column) => column.meta?.fetchOptionsInfo)
+        .map((column) => {
+            const {key, fetch_url} = column.meta?.fetchOptionsInfo || {};
+            return column?.meta?.fetchOptionsInfo;
+        });
 
+    const fetchData = async (fetchUrl: string) => {
+        const response = await AxiosInstance.get(fetchUrl);
+        return response.data;
+    }
+    const queries = useQueries({
+        queries: referencedTables.map((table) => {
+            return {
+                queryKey: [table?.key],
+                queryFn: async () => fetchData(table?.fetch_url ?? "").then((data) => {
+                    handleSelectOptions(table?.key as QueryKey, data.data);
+                    return data.data;
+                }),
+            }
+        })
+    })
     const [editedRows, setEditedRows] = useState({});
 
     const table = useReactTable({
@@ -162,7 +166,8 @@ export function DataTable<TData, TValue>({
                 {/*    }*/}
                 {/*    className="max-w-sm"*/}
                 {/*/>*/}
-                <div className={"flex flex-row gap-2 justify-between w-full"}>
+                <div
+                    className={"flex flex-row gap-2 justify-between w-full"}>
                     <FooterCell table={table} newRow={newRow}/>
                     <DataTableViewOptions table={table}/>
                 </div>

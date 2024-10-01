@@ -15,12 +15,17 @@ export default function EditCellCmp({row, table}: CellContext<any, any>) {
     const setEditedRows = (e: React.MouseEvent<HTMLButtonElement>) => {
         const elName = e.currentTarget.name;
         meta?.setEditedRows((old: []) => ({
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 ...old, [row.id]: !old[row.id],
             }
         ))
         if (elName != "edit") {
-            e.currentTarget.name == "cancel" ? meta?.revertData(row.index) : meta?.updateRow(row.index);
+            if (e.currentTarget.name == "cancel") {
+                meta?.revertData(row.index);
+            } else {
+                meta?.updateRow(row.index);
+            }
         }
     }
 
@@ -29,7 +34,8 @@ export default function EditCellCmp({row, table}: CellContext<any, any>) {
         meta?.removeRow(row.index);
     }
 
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     return meta?.editedRows[row.id] ? (
         <div className={"flex flex-row gap-2"}>
             <Button variant={"outline"} size={"icon"} name={"cancel"}
