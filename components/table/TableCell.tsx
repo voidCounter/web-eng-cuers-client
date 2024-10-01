@@ -11,11 +11,12 @@ import {
 } from "@/components/ui/select";
 import {cn} from "@/lib/utils";
 import {kalpurush} from "@/utils/fonts";
-import {useQuery} from "@tanstack/react-query";
-import {AxiosInstance} from "@/utils/AxiosInstance";
 import {QueryKey} from "@/utils/queryKeys";
-import {Option} from "@/types/option";
-import {handleSelectOptions} from "@/utils/SelectOptionsHandler";
+import {OptionType} from "@/types/optionType";
+import {useOptionStore} from "@/store/OptionStore";
+import {formatDate} from "date-fns";
+import {formatDateString} from "@/utils/formatDate";
+import {CalendarPopOver} from "@/components/ui/CalendarPopOver";
 
 
 export default function TableCellCmp(props: CellContext<any, any>) {
@@ -23,39 +24,22 @@ export default function TableCellCmp(props: CellContext<any, any>) {
     const {table, row, getValue, cell, column} = props;
     const columnMeta = column.columnDef.meta as {
         type: string,
-        options?: Option[],
+        options?: OptionType[],
         fetchOptionsInfo?: { fetch_url: string, key: QueryKey },
         placeholder?: string,
         language?: "Bengali" | "English"
     };
 
-    const [options, setOptions] = useState<Option[]>(columnMeta.options ?? []);
-
-    const {
-        data: fetchedOptionData,
-        isSuccess: selectOptionsFetched
-    } = useQuery({
-        queryKey: [columnMeta.fetchOptionsInfo?.key],
-        queryFn: async () => {
-            if (columnMeta.fetchOptionsInfo?.fetch_url.endsWith(".json")) {
-                return await fetch(columnMeta.fetchOptionsInfo?.fetch_url).then(res => res.json());
+    const {options} = useOptionStore();
+    const [passedOptions, setPassedOptions] = useState<OptionType[]>(() => {
+        if (columnMeta.options) return columnMeta.options;
+        if (columnMeta?.fetchOptionsInfo?.key) {
+            if (options[columnMeta.fetchOptionsInfo?.key]) {
+                return options[columnMeta.fetchOptionsInfo?.key];
             }
-            const response = await AxiosInstance.get(columnMeta.fetchOptionsInfo?.fetch_url ?? "");
-            return response?.data?.data;
-        },
-        enabled: false
-    })
-    if (selectOptionsFetched) {
-        const key = columnMeta.fetchOptionsInfo?.key;
-
-        if (Object.values(QueryKey).includes(key as QueryKey)) {
-            const selectOptions = handleSelectOptions(key as QueryKey, fetchedOptionData);
-            setOptions(selectOptions);
-        } else {
-            console.warn(`Invalid query key: ${key}`);
         }
-    }
-
+        return [];
+    });
 
     const initialValue = getValue();
     const [value, setValue] = useState(initialValue);
@@ -92,7 +76,7 @@ export default function TableCellCmp(props: CellContext<any, any>) {
                         </SelectTrigger>
                         <SelectContent>
                             {
-                                options.map((option) => <SelectItem
+                                passedOptions.map((option) => <SelectItem
                                     key={option.value}
                                     className={cn(columnMeta?.language == "Bengali" && kalpurush.className)}
                                     value={option.value.toString()}>{option.label}</SelectItem>)
@@ -101,15 +85,26 @@ export default function TableCellCmp(props: CellContext<any, any>) {
                     </Select>
                 )
                     ;
+            } else if (columnMeta.type == "date") {
+                return <CalendarPopOver value={value}/>
             }
         } else {
-            return <div
-                className={cn("ml-4")}>{value}</div>
+            if (columnMeta?.type == "select") {
+                return <div>
+                    {passedOptions?.filter((item => {
+                        return item.value == value;
+                    }))[0]?.label}
+                </div>
+            } else if (columnMeta?.type == "text") {
+                return <div>{value}</div>
+            } else if (columnMeta?.type == "date") {
+                return <div>{formatDateString(value)}</div>
+            } else {
+                return <div>{value}</div>
+            }
         }
     }
 
     return (<div
         className={cn(columnMeta?.language == "Bengali" && kalpurush.className)}>{cellContent()}</div>)
-
-
 }

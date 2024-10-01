@@ -13,9 +13,7 @@ export default function EditCellCmp({row, table}: CellContext<any, any>) {
     };
 
     const setEditedRows = (e: React.MouseEvent<HTMLButtonElement>) => {
-        console.log('need to be edit');
         const elName = e.currentTarget.name;
-        console.log(meta?.editedRows);
         meta?.setEditedRows((old: []) => ({
                 // @ts-ignore
                 ...old, [row.id]: !old[row.id],

@@ -7,8 +7,6 @@ import {ArrowUpDown} from "lucide-react";
 import {Checkbox} from "@/components/ui/checkbox";
 import TableCellCmp from "@/components/table/TableCell";
 import EditCellCmp from "@/components/table/EditCell";
-import {AxiosInstance} from "@/utils/AxiosInstance";
-import {BillSectorType} from "@/app/app/billing-sectors/columns";
 import {QueryKey} from "@/utils/queryKeys";
 
 
@@ -62,7 +60,7 @@ export const columns: ColumnDef<BillingRuleType>[] = [
             type: "select",
             language: "Bengali",
             fetchOptionsInfo: {
-                fetch_url: process.env.NEXT_PUBLIC_CUERS_EXAM_BILL_SECTORS,
+                fetch_url: process.env.NEXT_PUBLIC_CUERS_EXAM_BILL_SECTORS ?? "",
                 key: QueryKey.BILL_SECTORS
             }
         }
@@ -80,10 +78,10 @@ export const columns: ColumnDef<BillingRuleType>[] = [
         },
         cell: TableCellCmp,
         meta: {
-            type: "text",
+            type: "select",
             language: "Bengali",
             fetchOptionsInfo: {
-                fetch_url: process.env.NEXT_PUBLIC_CUERS_EXAM_ACTIVITY_TYPE,
+                fetch_url: process.env.NEXT_PUBLIC_CUERS_EXAM_ACTIVITY_TYPE ?? "",
                 key: QueryKey.ACTIVITY_TYPE
             }
         }
@@ -168,9 +166,34 @@ export const columns: ColumnDef<BillingRuleType>[] = [
         meta: {
             type: "select",
             options: [
-                "পরীক্ষার সংখ্যা", "প্রশ্নের সংখ্যা", "ঘণ্টা", "ছাত্রের" +
-                " সংখ্যা", "সদস্য সংখ্যা", "পরীক্ষার সংখ্যা", "পৃষ্ঠার" +
-                " সংখ্যা", "কোর্স"
+                {
+                    value: "পরীক্ষার সংখ্যা",
+                    label: "পরীক্ষার সংখ্যা"
+                },
+                {
+                    value: "প্রশ্নের সংখ্যা",
+                    label: "প্রশ্নের সংখ্যা"
+                },
+                {
+                    value: "ঘণ্টা",
+                    label: "ঘণ্টা"
+                },
+                {
+                    value: "ছাত্রের সংখ্যা",
+                    label: "ছাত্রের সংখ্যা"
+                },
+                {
+                    value: "সদস্য সংখ্যা",
+                    label: "সদস্য সংখ্যা"
+                },
+                {
+                    value: "পৃষ্ঠার সংখ্যা",
+                    label: "পৃষ্ঠার সংখ্যা"
+                },
+                {
+                    value: "কোর্স",
+                    label: "কোর্স"
+                }
             ],
             language: "Bengali",
         }

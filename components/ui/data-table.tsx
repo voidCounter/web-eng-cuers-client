@@ -28,6 +28,10 @@ import {DataTablePagination} from "@/components/ui/DataTablePagination";
 import {DataTableViewOptions} from "@/components/ui/DataTableViewOptions";
 import FooterCell from "@/components/table/FooterCell";
 import {all} from "axios";
+import {useQuery} from "@tanstack/react-query";
+import {useFetchData} from "@/hooks/useFetchData";
+import {convertToQueryKey, QueryKey} from "@/utils/queryKeys";
+import {handleSelectOptions} from "@/utils/SelectOptionsHandler";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -51,10 +55,24 @@ export function DataTable<TData, TValue>({
     const [rowSelection, setRowSelection] = useState({});
     const [originalData, setOriginalData] = useState(() => [...defaultData]);
 
-    useEffect(() => {
-        const allMeta = columns.map((column) => column.meta);
-        console.log(allMeta);
-    }, []);
+
+    const allMeta = columns.map((column) => column.meta);
+    const fetchUrls = allMeta.filter((meta) => meta?.fetchOptionsInfo != undefined);
+    fetchUrls.map((meta) => {
+        if (meta?.fetchOptionsInfo) {
+            const {
+                data: fetchedData,
+                isLoading: isFetching,
+                isSuccess: isDataFetched,
+                refetch: refetchData
+            } = useFetchData(meta?.fetchOptionsInfo?.key, meta?.fetchOptionsInfo?.fetch_url);
+            refetchData().then((data) => {
+                if (isDataFetched) {
+                    handleSelectOptions(meta?.fetchOptionsInfo?.key!, data.data);
+                }
+            });
+        }
+    });
 
     const [editedRows, setEditedRows] = useState({});
 

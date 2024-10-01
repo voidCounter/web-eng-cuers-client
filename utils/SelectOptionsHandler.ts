@@ -1,21 +1,34 @@
 import {QueryKey} from "@/utils/queryKeys";
-import {Option} from "@/types/option";
+import {OptionType} from "@/types/optionType";
 import {BillSectorType} from "@/app/app/billing-sectors/columns";
+import {useOptionStore} from "@/store/OptionStore";
+import {Option} from "commander";
+import {ExamActivityType} from "@/app/app/billing-activity-types/columns";
 
-export const handleSelectOptions = (key: QueryKey, data: any[]): Option[] => {
+export const handleSelectOptions = (key: QueryKey, data: any[]): OptionType[] => {
+    const {options, setOptions} = useOptionStore.getState();
     if (data.length === 0) return [];
-    console.log("Data: ", data);
+    let mappedOptions: OptionType[] = [];
     switch (key) {
         case QueryKey.BILL_SECTORS:
-            return data.map((sector: BillSectorType) => ({
-                label: sector.bill_sector_id + "-" + sector.bill_sector_name,
+            mappedOptions = data.map((sector: BillSectorType) => ({
+                label: sector.bill_sector_name,
                 value: sector.bill_sector_id
             }));
+            break;
         case QueryKey.BILLING_RULES:
-            return data.map((rule: any) => ({
+            mappedOptions = data.map((rule: any) => ({
                 label: rule.name,
                 value: rule.id
             }));
+            break;
+        case QueryKey.ACTIVITY_TYPE:
+            mappedOptions = data.map((activity: ExamActivityType) => ({
+                label: activity.exam_activity_name,
+                value: activity.exam_activity_type_id
+            }));
+            break;
     }
+    setOptions(key, mappedOptions);
     return [];
 }
