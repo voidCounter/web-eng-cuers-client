@@ -67,9 +67,10 @@ export default function TableCellCmp(props: CellContext<any, any>) {
                 }}
                               onBlur={onBlur}/>
             } else if (columnMeta.type == "select") {
+                // TODO: Instead of select use combobox.
                 return (
                     <Select onValueChange={(value) => onSelectChange(value)}
-                            value={value}>
+                            value={value.toString()}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue
                                 placeholder={columnMeta?.placeholder ?? "Select"}/>
