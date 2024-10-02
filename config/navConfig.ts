@@ -1,13 +1,22 @@
 import {BookOpenTextIcon, Grid2x2CheckIcon, LayoutListIcon} from "lucide-react";
 import {NavConfigType} from "@/types/NavTypes";
 import {RoleType} from "@/store/RoleStore";
+import {ExamInfoType} from "@/types/ExamInfoType";
 
-export const generateNavItems = (role: RoleType): NavConfigType => {
+
+export const generateNavItems = (role: RoleType, examInfo?: ExamInfoType[]): NavConfigType => {
     switch (role) {
         case "chairman":
             return chairmanNavItems;
-        // case "registrar":
-        //     return registrarNavItems;
+        case "evaluator": {
+            let evaulatorNavItems: NavConfigType = {navItems: []};
+            if (examInfo) {
+                const examYearGroups = examInfo.reduce((acc, item) => {
+                    return acc;
+                }, {});
+            }
+        }
+            return chairmanNavItems;
         default:
             return chairmanNavItems;
     }

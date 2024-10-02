@@ -22,16 +22,14 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table";
-import {useEffect, useState} from "react";
-import {Input} from "@/components/ui/input";
+import {useState} from "react";
 import {DataTablePagination} from "@/components/ui/DataTablePagination";
 import {DataTableViewOptions} from "@/components/ui/DataTableViewOptions";
 import FooterCell from "@/components/table/FooterCell";
-import {all} from "axios";
-import {useQueries, useQuery} from "@tanstack/react-query";
-import {convertToQueryKey, QueryKey} from "@/utils/queryKeys";
+import {useQueries} from "@tanstack/react-query";
+import {QueryKey} from "@/utils/queryKeys";
 import {handleSelectOptions} from "@/utils/SelectOptionsHandler";
-import {AxiosInstance} from "@/utils/AxiosInstance";
+import {fetchData} from "@/utils/fetchData";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -63,10 +61,7 @@ export function DataTable<TData, TValue>({
             return column?.meta?.fetchOptionsInfo;
         });
 
-    const fetchData = async (fetchUrl: string) => {
-        const response = await AxiosInstance.get(fetchUrl);
-        return response.data;
-    }
+
     const queries = useQueries({
         queries: referencedTables.map((table) => {
             return {
