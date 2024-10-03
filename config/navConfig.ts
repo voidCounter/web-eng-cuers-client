@@ -1,6 +1,6 @@
 import {
     BookOpenTextIcon, CalendarFoldIcon,
-    CalendarIcon,
+    CalendarIcon, FormInputIcon,
     Grid2x2CheckIcon,
     LayoutListIcon
 } from "lucide-react";
@@ -11,9 +11,16 @@ import {generateSlug} from "@/utils/slugGenerator";
 
 
 export const generateNavItems = (role: RoleType, examInfo?: ExamInfoType[]): NavConfigType => {
+    console.log("Current roel", role);
     switch (role) {
         case "chairman":
             return chairmanNavItems;
+        case "exam-controller":
+        case "account-bill-section":
+        case "account-cheque-section":
+        case "account-chief":
+        case "section-officer":
+            return staffNavItems;
         case "chairman-of-exam-committee":
             return cecNavItems;
         case "evaluator": {
@@ -52,7 +59,7 @@ export const generateNavItems = (role: RoleType, examInfo?: ExamInfoType[]): Nav
             return evaluatorNavItems;
         }
         default:
-            return chairmanNavItems;
+            return {navItems: []};
     }
 }
 
@@ -62,6 +69,21 @@ export const cecNavItems: NavConfigType = {
             label: "Manage activity data",
             icon: Grid2x2CheckIcon,
             path: "/app/manage-activity-data"
+        },
+        {
+            label: "Check Bills",
+            icon: FormInputIcon,
+            path: "/app/check-bills"
+        }
+    ]
+}
+
+export const staffNavItems: NavConfigType = {
+    navItems: [
+        {
+            label: "Check Bills",
+            icon: FormInputIcon,
+            path: "/app/check-bills"
         }
     ]
 }

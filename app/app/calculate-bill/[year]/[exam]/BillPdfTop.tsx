@@ -120,7 +120,7 @@ export default function BillPdfTop({
                         >
                             <Text style={styles.tableCell}>
                                 ইংরেজি (বড় অক্ষরে) :{' '}
-                                {`${evaluatorInfo?.first_name.toUpperCase()} ${evaluatorInfo?.last_name.toUpperCase()} `}
+                                {`${evaluatorInfo?.first_name.toUpperCase() ?? " "} ${evaluatorInfo?.last_name.toUpperCase()} `}
                             </Text>
                         </View>
                         <View

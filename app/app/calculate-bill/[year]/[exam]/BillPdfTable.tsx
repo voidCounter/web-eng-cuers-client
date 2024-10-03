@@ -240,7 +240,8 @@ export default function BillPdfTable({styles, billInfo}: BillPdfTableProps) {
                         ]}
                     >
                         <Text style={styles.tableCell}>
-                            মোট টাকা কথায় = {"hello"}{" "}
+                            মোট টাকা কথায়
+                            = {`${toBanglaNumber(totalBill)}`}{" "}
                         </Text>
                         <Text>মোট টাকা = </Text>
                     </View>

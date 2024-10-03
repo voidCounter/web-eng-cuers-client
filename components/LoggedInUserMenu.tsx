@@ -22,9 +22,11 @@ import {useAuthStore} from "@/store/AuthStore";
 import {useRouter} from "next/navigation";
 import {useMutation} from "@tanstack/react-query";
 import {toast} from "sonner";
+import {useRoleStore} from "@/store/RoleStore";
 
 export default function LoggedInUserMenu() {
     const {deleteAuthenticatedSession} = useAuthStore();
+    const {deleteRoleStore} = useRoleStore();
 
     const router = useRouter()
 
@@ -33,6 +35,7 @@ export default function LoggedInUserMenu() {
         onSuccess: () => {
             toast.success("Logged out successfully");
             deleteAuthenticatedSession();
+            deleteRoleStore();
             router.push("/");
         },
         onError: () => {

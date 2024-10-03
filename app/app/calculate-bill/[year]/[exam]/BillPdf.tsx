@@ -172,7 +172,9 @@ export default function BillPdf({
     const [billSubmitDialogOpen, setBillSubmitDialogOpen] = useState(false);
     const {evaluatorExamInfo} = useEvaluatorExamInfoStore();
     const {authenticatedSession} = useAuthStore();
+    console.log(billInfo);
     const groupedData = groupBillData(billInfo);
+    console.log(groupedData);
     console.log(groupedData);
     const {
         setTeacherInfo,
@@ -191,7 +193,6 @@ export default function BillPdf({
         queryKey: ['department', authenticatedSession?.user?.department_id],
         queryFn: async (): Promise<DepartmentType> => {
             const response = await AxiosInstance.get(`/department/${authenticatedSession?.user?.department_id}`);
-            console.log("department info: ", response.data);
             setDepartment(response.data);
             return response.data;
         },
@@ -202,7 +203,6 @@ export default function BillPdf({
         queryKey: ['university', departmentInfo?.university_id],
         queryFn: async (): Promise<UniversityType> => {
             const response = await AxiosInstance.get(`/university/${departmentInfo?.university_id}`);
-            console.log("university info: ", response.data);
             setUniversity(response.data);
             return response.data;
         }, enabled: !!departmentInfo,

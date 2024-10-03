@@ -78,7 +78,7 @@ export default function BillStatus() {
     }
 
     return (
-        <div className={"mt-20"}>
+        <div className={"mt-20 px-12"}>
             <ProcedureProgress showSerial={true} direction="horizontal">
                 {
                     billSteps.map((step, index) => <ProgressStep key={index}

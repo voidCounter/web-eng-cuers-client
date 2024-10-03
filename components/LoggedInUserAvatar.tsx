@@ -55,7 +55,7 @@ const LoggedInUserAvatar = React.forwardRef<HTMLDivElement, LoggedInUserAvatarPr
                     {
                         showUsername &&
                         <h3
-                            className="text-muted-foreground text-sm leading-none">@{authenticatedSession?.user?.email ?? " "}</h3>
+                            className="text-muted-foreground text-sm leading-none">{authenticatedSession?.user?.email ?? " "}</h3>
 
                     }
                 </div>
