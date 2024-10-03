@@ -17,7 +17,7 @@ export default function BillingSectors() {
     } = useTable<BillSectorType>("/cuers/exam-bill-sectors");
 
     if (isLoading) {
-        return <Loading text={"Loading bill sectors"}/>
+        return <Loading text={"Loading Bill Sectors"}/>
     }
 
     return (

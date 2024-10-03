@@ -2,6 +2,7 @@
 import {useTable} from "@/hooks/useTable";
 import GenericTable from "@/components/GenericTablePage";
 import {BillingRuleType, columns} from "@/app/app/billing-rule-book/columns";
+import Loading from "@/components/loading";
 
 export default function BillingActivityTypes() {
     const newBillingRuleType: BillingRuleType = {
@@ -21,7 +22,9 @@ export default function BillingActivityTypes() {
         createMutation, updateMutation, deleteMutation,
         isError
     } = useTable<BillingRuleType>("/cuers/exam-activity");
-
+    if (isLoading) {
+        return <Loading text={"Loading Billing Rules"}/>
+    }
     return (
         <div>
             {

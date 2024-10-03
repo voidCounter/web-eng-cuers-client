@@ -2,7 +2,7 @@ import {create} from "zustand";
 import {persist} from "zustand/middleware";
 
 type StaffRole = "chairman" | "registrar" | "none";
-type CECRole = "cec" | "none";
+type CECRole = "chairman-of-exam-committee" | "none";
 type EvaluatorRole = "evaluator" | "none";
 
 export type RoleType = StaffRole | CECRole | EvaluatorRole;
