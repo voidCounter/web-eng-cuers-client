@@ -17,7 +17,7 @@ export default function NavItem(navItem: NavItemType) {
 
     if (navItem.subItems) {
         return (
-            <div>
+            <div className={"w-full"}>
                 <AccordionItem
                     value={navItem.label}
                     className={cn("border-b-0")}>
@@ -42,11 +42,15 @@ export default function NavItem(navItem: NavItemType) {
                                              className="flex flex-col">
                                             <Link
                                                 href={`${subNavItem.path}`}
-                                                className={cn(buttonVariants({variant: "ghost"}), "gap-2 justify-start")}>
+                                                className={cn(buttonVariants({variant: "ghost"}), "gap-2 justify-start h-fit")}>
                                                 <div
                                                     className="w-6 h-6"></div>
                                                 <span
-                                                    className={cn("text-base", isActive && "text-success-foreground")}>{subNavItem.label}</span>
+                                                    className={cn("w-full" +
+                                                        " text-wrap" +
+                                                        " text-base" +
+                                                        " line-clamp-2" +
+                                                        " text-truncate", isActive && "text-success-foreground")}>{subNavItem.label}</span>
                                             </Link>
                                         </div>
                                     );

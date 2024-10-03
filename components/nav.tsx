@@ -13,24 +13,45 @@ import {fetchData} from "@/utils/fetchData";
 import {ExamInfoType} from "@/types/ExamInfoType";
 import {promises} from "node:dns";
 import {Exam} from "@/types/ExamType";
+import {useEvaluatorExamInfoStore} from "@/store/EvaluatorExamInfoStore";
+import {useRouter} from "next/navigation";
 
 export function Nav({className}: { className?: string }) {
+    const route = useRouter();
     const {currentRole} = useRoleStore();
+    const {setCurrentEvaluatorExamInfo} = useEvaluatorExamInfoStore();
     const [roleState, setRoleState] = useState<RoleType>("none");
+
     useEffect(() => {
         setRoleState(currentRole);
+        // route to the first default route
     }, [currentRole]);
 
-    const {data: examInfo, isSuccess: evaluatorInfoFetched} = useQuery({
+
+    const {
+        data: evaluatorExamInfo,
+        isSuccess: evaluatorInfoFetched
+    } = useQuery({
             queryKey: ["evaulator_info"],
-            queryFn: (): Promise<ExamInfoType[]> => fetchData("/cuers/calculate-bill").then((data) => data.data),
-            enabled: roleState == "evaluator",
+            queryFn: (): Promise<ExamInfoType[]> => fetchData("/cuers/calculate-bill").then((data) => {
+                setCurrentEvaluatorExamInfo(data.data);
+                return data.data;
+            }),
+            enabled: roleState == "evaluator" && roleState != undefined,
         }
     );
 
-    if (evaluatorInfoFetched) {
-        console.log(examInfo);
-    }
+    // const {data: cecExamInfo, isSuccess: cecInfoFetched} = useQuery({
+    //     queryKey: ["cec_info"],
+    //     queryFn: (): Promise<ExamInfoType[]> => fetchData("/cuers/evaluates-activity").then((data) => {
+    //         return data.data;
+    //     }),
+    //     enabled: roleState == "chairman-of-exam-committee" && roleState != undefined,
+    // })
+    // if (cecInfoFetched) {
+    //     console.log(cecExamInfo);
+    // }
+
     return (
         <div
             className={`w-full ${cn(className)} h-full flex flex-col justify-between`}>
@@ -38,7 +59,7 @@ export function Nav({className}: { className?: string }) {
                 <SelectRole/>
                 <Accordion type="single" collapsible
                            className="hover:decoration-0">
-                    {generateNavItems(roleState as RoleType, examInfo)?.navItems?.map((navItem, index) => {
+                    {generateNavItems(roleState as RoleType, evaluatorExamInfo)?.navItems?.map((navItem, index) => {
                         return (
                             <div key={index} className="flex flex-col">
                                 <NavItem label={navItem.label}

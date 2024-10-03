@@ -20,22 +20,33 @@ import {useQuery} from "@tanstack/react-query";
 import {AxiosInstance} from "@/utils/AxiosInstance";
 import {useAuthStore} from "@/store/AuthStore";
 import {RolesType, RoleType, useRoleStore} from "@/store/RoleStore";
+import {router} from "next/client";
+import {useRouter} from "next/navigation";
 
 export default function SelectRole() {
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState("")
     const {authenticatedSession} = useAuthStore();
+    const route = useRouter();
 
-    const {currentRole, setCurrentRole} = useRoleStore();
+    const {currentRole, setCurrentRole, setRoles} = useRoleStore();
     const {data: roles, isSuccess: rolesFetched} = useQuery({
         queryKey: ["roles", authenticatedSession?.user?.user_id],
-        queryFn: (): Promise<RolesType> => AxiosInstance.get("/cuers").then((response) => response.data.roles),
+        queryFn: (): Promise<RolesType> => AxiosInstance.get("/cuers").then((response) => {
+            if (response.data.roles) {
+                setRoles(response.data.roles);
+                Object.entries(response.data.roles).map((item) => {
+                    if (item[1] != "none") {
+                        setCurrentRole(item[1] as RoleType);
+                    }
+                });
+                return response.data.roles;
+            }
+        }),
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
     })
-    if (rolesFetched) {
-    }
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -64,7 +75,8 @@ export default function SelectRole() {
                                     onSelect={(currentValue: string) => {
                                         setValue(currentValue === currentRole ? "" : currentValue)
                                         setCurrentRole(currentValue as RoleType);
-                                        setOpen(false)
+                                        setOpen(false);
+                                        route.push("/app");
                                     }}
                                 >
                                     <Check

@@ -22,7 +22,7 @@ export default function BillingActivityTypes() {
         isError
     } = useTable<ExamActivityType>("/cuers/exam-activity-type");
     if (isLoading) {
-        return <Loading text={"Loading billing activity types"}/>
+        return <Loading text={"Loading Billing Activity Types"}/>
     }
 
     return (

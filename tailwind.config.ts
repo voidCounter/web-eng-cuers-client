@@ -7,7 +7,8 @@ const config: Config = {
         './components/**/*.{ts,tsx}',
         './app/**/*.{ts,tsx}',
         './src/**/*.{ts,tsx}',
-        './layouts/**/*.{ts,tsx}'
+        './layouts/**/*.{ts,tsx}',
+        './wels-components/**/*.{ts,tsx}'
     ],
     theme: {
         extend: {
@@ -41,6 +42,10 @@ const config: Config = {
                 destructive: {
                     DEFAULT: 'hsl(var(--destructive))',
                     foreground: 'hsl(var(--destructive-foreground))'
+                },
+                warning: {
+                    DEFAULT: "hsl(var(--warning))",
+                    foreground: "hsl(var(--warning-foreground))",
                 },
                 success: {
                     DEFAULT: "var(--success)",

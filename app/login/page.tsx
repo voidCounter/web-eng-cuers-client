@@ -1,11 +1,11 @@
 "use client";
 import {z} from "zod";
-import React, {useEffect} from "react";
+import React from "react";
 import {useAuthStore} from "@/store/AuthStore";
 import {useRouter} from "next/navigation";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {AxiosError, AxiosResponse} from "axios";
+import {Axios, AxiosError, AxiosResponse} from "axios";
 import {UserType} from "@/types/UserType";
 import {AxiosInstance} from "@/utils/AxiosInstance";
 import {
@@ -18,13 +18,13 @@ import {
 import {Input} from "@/components/ui/input";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
-import {FormErrorType} from "@/types/FormErrorType";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {useSettingStore} from "@/store/SettingStore";
 import Loading from "@/components/loading";
 import {PasswordInput} from "@/components/ui/PasswordInput";
 import {LoginResponseType} from "@/types/LoginResponseType";
 import {toast} from "sonner";
+import {fetchUserInfo} from "@/hooks/useFetchUserInfo";
 
 const loginSchema = z.object({
     email: z.string().email(),
@@ -34,9 +34,7 @@ const loginSchema = z.object({
 
 export default function Login() {
     const {
-        authenticatedSession,
         setAuthenticatedSession,
-        _hasHydrated,
         setAuthenticatedUser
     } = useAuthStore();
     const {lastRoute} = useSettingStore();
@@ -49,53 +47,44 @@ export default function Login() {
         },
     })
 
-
-    const {
-        data: userInfo,
-        refetch: fetchUserInfo,
-        isError: errorFetchingUserInfo,
-        isSuccess
-    } = useQuery({
-            queryKey: ['user', authenticatedSession?.session_id],
-            queryFn: (): Promise<UserType> => AxiosInstance.get("/user", {
-                headers: {
-                    "Authorization": `Bearer ${authenticatedSession?.session_id}`
-                }
-            }).then(response => response.data),
-            enabled: false,
-        }
-    )
-
-    if (errorFetchingUserInfo) {
-        toast.error("Failed to fetch user information");
-    }
-
-
     const {mutateAsync: login, isPending, isError} = useMutation({
         mutationFn: (data: z.infer<typeof loginSchema>) => AxiosInstance.post("/login", data),
-        onSuccess: data => {
+        onSuccess: async (data) => {
             const response: AxiosResponse<LoginResponseType> = data;
             console.log(response.data);
             // first time login
             if (response.data.user != null) {
+                console.log("First time login..");
                 setAuthenticatedSession({
                     session_id: response.data.session_id,
                     user: response.data.user,
                     role: response.data.role
                 });
+                router.push("/app");
             } else if (response.data.session_id != null) {
                 // Session already exists - set only the session ID, then fetch user info
+                console.log("user already exists");
                 setAuthenticatedSession({
                     session_id: response.data.session_id,
                     user: null,
                     role: null,
                 });
+                const userInfoResponse: AxiosResponse<UserType> = await AxiosInstance.get("/user", {
+                    headers: {
+                        "Authorization": `Bearer ${response.data.session_id}`
+                    }
+                })
+                if (userInfoResponse.data) {
+                    setAuthenticatedUser(userInfoResponse.data);
+                }
+                router.push("/app");
             }
         },
         onError: error => {
             const axiosError
                 = (error as AxiosError)?.response?.data as AxiosResponse
-            if (axiosError.status == 403)
+            console.log(axiosError);
+            if (axiosError && axiosError.status == 403)
                 toast.error("Invalid Credentials");
         },
 
@@ -103,26 +92,7 @@ export default function Login() {
 
     function onLoginFormSubmit(data: z.infer<typeof loginSchema>) {
         useAuthStore.persist.rehydrate();
-        login(data).then((data) => {
-            // Ensure we have an authenticated session with session_id before fetching user info
-            if (_hasHydrated && authenticatedSession?.session_id) {
-                console.log("Still nothing");
-                fetchUserInfo()
-                    .then((response) => {
-                        if (response.isSuccess) {
-                            const user: UserType = response.data;
-                            setAuthenticatedUser(user);
-                            router.push("/app");
-                        }
-                        return response;
-                    })
-                    .then(() => {
-                    })
-                    .catch(error => {
-                        console.error("Error fetching user info:", error);
-                    });
-            }
-        });
+        login(data);
     }
 
     return (
