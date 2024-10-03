@@ -11,14 +11,15 @@ import {generateSlug} from "@/utils/slugGenerator";
 
 
 export const generateNavItems = (role: RoleType, examInfo?: ExamInfoType[]): NavConfigType => {
+    console.log("Current roel", role);
     switch (role) {
         case "chairman":
             return chairmanNavItems;
-        case "exam_controller":
-        case "account_bill_section":
-        case "account_cheque_section":
-        case "account_chief":
-        case "section_officer":
+        case "exam-controller":
+        case "account-bill-section":
+        case "account-cheque-section":
+        case "account-chief":
+        case "section-officer":
             return staffNavItems;
         case "chairman-of-exam-committee":
             return cecNavItems;

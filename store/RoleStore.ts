@@ -4,12 +4,12 @@ import {persist} from "zustand/middleware";
 type ChairmanRole = "chairman" | "none";
 type CECRole = "chairman-of-exam-committee" | "none";
 type EvaluatorRole = "evaluator" | "none";
-type AccountBillSectionRole = "account_bill_section" | "none";
-type ExamBillSection = "exam_bill_section" | "none";
-type AccountChequeSectionRole = "account_cheque_section" | "none";
-type AccountChiefRole = "account_chief" | "none";
-type ExamControllerRole = "exam_controller" | "none";
-type SectionOfficerRole = "section_officer" | "none";
+type AccountBillSectionRole = "account-bill-section" | "none";
+type ExamBillSection = "exam-bill-section" | "none";
+type AccountChequeSectionRole = "account-cheque-section" | "none";
+type AccountChiefRole = "account-chief" | "none";
+type ExamControllerRole = "exam-controller" | "none";
+type SectionOfficerRole = "section-officer" | "none";
 
 export type RoleType =
     ChairmanRole

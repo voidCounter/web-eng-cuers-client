@@ -36,19 +36,19 @@ export default function BillingActivityTypes() {
                 case "chairman-of-exam-committee":
                     filteredData = billsData.filter((bill: ExamBillType) => bill.exam_bill_position === 1);
                     break;
-                case "exam_controller":
+                case "exam-controller":
                     filteredData = billsData.filter((bill: ExamBillType) => bill.exam_bill_position === 2);
                     break;
-                case "exam_bill_section":
+                case "exam-bill-section":
                     filteredData = billsData.filter((bill: ExamBillType) => bill.exam_bill_position === 3);
                     break;
-                case "account_chief":
+                case "account-chief":
                     filteredData = billsData.filter((bill: ExamBillType) => bill.exam_bill_position === 4);
                     break;
-                case "account_bill_section":
+                case "account-bill-section":
                     filteredData = billsData.filter((bill: ExamBillType) => bill.exam_bill_position === 5);
                     break;
-                case "account_cheque_section":
+                case "account-cheque-section":
                     filteredData = billsData.filter((bill: ExamBillType) => bill.exam_bill_position === 6);
                     break;
                 default:
@@ -57,7 +57,6 @@ export default function BillingActivityTypes() {
             setData(filteredData);
         }
     }, [billsData]);
-    console.log(billsData, currentRole);
 
     if (isLoading) {
         return <Loading text={"Loading Billing bills"}/>
