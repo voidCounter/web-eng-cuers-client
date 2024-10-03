@@ -2,17 +2,11 @@
 import {Button} from "@/components/ui/button"
 import {
     Command,
-    CommandEmpty,
     CommandGroup,
-    CommandInput,
     CommandItem,
     CommandList,
 } from "@/components/ui/command"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
+import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover"
 import React, {useState} from "react";
 import {Check, ChevronsUpDown} from "lucide-react";
 import {cn} from "@/lib/utils";
@@ -20,7 +14,6 @@ import {useQuery} from "@tanstack/react-query";
 import {AxiosInstance} from "@/utils/AxiosInstance";
 import {useAuthStore} from "@/store/AuthStore";
 import {RolesType, RoleType, useRoleStore} from "@/store/RoleStore";
-import {router} from "next/client";
 import {useRouter} from "next/navigation";
 
 export default function SelectRole() {

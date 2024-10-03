@@ -57,9 +57,10 @@ export default function BillSubmitDialog({
             teacher_id: currUserInfo?.teacher_id,
             academic_session_id: currExamInfo?.academic_session_id,
             department_id: teacherDept?.department_id,
-            exam_bill_position: 0,
+            exam_bill_position: 1,
             exam_id: currExamInfo?.exam_id,
-            file_path: filePath
+            file_path: filePath,
+            status: "waiting"
         })
     });
 
@@ -81,6 +82,7 @@ export default function BillSubmitDialog({
             }[]
         } = await uploadFile(data);
         insertIntoBillTable(res.files[0].path);
+        onOpen();
         console.log("File uploaded", res);
     };
     return (<Dialog onOpenChange={() => onOpen()} open={open}>

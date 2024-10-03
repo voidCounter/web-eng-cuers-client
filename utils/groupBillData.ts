@@ -18,7 +18,6 @@ export const groupBillData = (data: BillExamActivity[]): BillGroupedExamActivity
             // If found, sum the calculation_amount and concatenate the course_id
             existingEntry.calculation_amount += item.calculation_amount;
             const existingCourseIds = existingEntry?.course_id.split(",");
-            console.log(existingCourseIds);
             if (!existingCourseIds?.includes(item.course_id)) {
                 existingEntry.course_id += `,${item.course_id}`;
             }
