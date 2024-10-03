@@ -81,8 +81,8 @@ export default function BillStatus() {
         <div className={"mt-20"}>
             <ProcedureProgress showSerial={true} direction="horizontal">
                 {
-                    billSteps.map((step, index) => <ProgressStep
-                        status={findStatus(index) ?? "processing"}>{step.name}</ProgressStep>)
+                    billSteps.map((step, index) => <ProgressStep key={index}
+                                                                 status={findStatus(index) ?? "processing"}>{step.name}</ProgressStep>)
                 }
             </ProcedureProgress>
         </div>

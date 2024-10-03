@@ -93,8 +93,9 @@ export default function BillSubmitDialog({
                         Committee
                         of <span
                         className={"font-bold"}>{currExamInfo?.session}-{currExamInfo?.exam_name} exam</span>.
-                        Please make sure you've downloaded and reviewed the pdf
-                        before submitting.
+                        {`Please make sure you've downloaded and reviewed' +
+                            ' the pdf
+                        before submitting.`}
                     </DialogDescription>
                     <div className="grid w-full items-center gap-1.5">
                         <Form {...form}>
@@ -122,7 +123,7 @@ export default function BillSubmitDialog({
                                 />
                                 <Button type="submit">{isUploading ?
                                     <Loading text="Uploading"/> :
-                                    <div>"Submit"</div>}</Button>
+                                    <div>Submit</div>}</Button>
                             </form>
                         </Form>
                     </div>

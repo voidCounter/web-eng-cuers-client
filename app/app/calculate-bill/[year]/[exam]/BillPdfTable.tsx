@@ -25,10 +25,10 @@ export default function BillPdfTable({styles, billInfo}: BillPdfTableProps) {
     }, 0);
     return (
         <View style={[styles.table, {marginTop: "5px"}]}>
-            // table headers
             <View style={styles.tableRow}>
                 {keys.map((item, index) => (
-                    <View style={[styles.tableCol, {width: item[1]}]}>
+                    <View key={index}
+                          style={[styles.tableCol, {width: item[1]}]}>
                         <Text
                             style={[
                                 styles.tableCell,
@@ -41,16 +41,16 @@ export default function BillPdfTable({styles, billInfo}: BillPdfTableProps) {
                 ))}
             </View>
             <View style={[]}>
-                {activityList.map((item) => {
+                {activityList.map((item, index) => {
                     let matchedBill = null;
-                    let matchedBills = billInfo.filter(
+                    const matchedBills = billInfo.filter(
                         (bill) => bill.exam_activity_type_id === item.exam_activity_type);
                     if (matchedBills.length > 1) {
                         matchedBill = matchedBills.filter((bill) => bill.bill_sector_id == item.bill_sector)[0];
                     }
                     if (item.noEntry) {
                         return (
-                            <View style={styles.tableRow}>
+                            <View key={index} style={styles.tableRow}>
                                 <View
                                     style={[
                                         styles.tableCol,
@@ -86,7 +86,7 @@ export default function BillPdfTable({styles, billInfo}: BillPdfTableProps) {
                         );
                     } else {
                         return (
-                            <View style={styles.tableRow}>
+                            <View key={index} style={styles.tableRow}>
                                 <View
                                     style={[
                                         styles.tableCol,
@@ -99,7 +99,6 @@ export default function BillPdfTable({styles, billInfo}: BillPdfTableProps) {
                                             : `${toBanglaNumber(parseInt(item.no))}.`}
                                     </Text>
                                 </View>
-                                // কাজের নাম
                                 <View style={[styles.tableCol, {width: "21%"}]}>
                                     <Text
                                         style={[
