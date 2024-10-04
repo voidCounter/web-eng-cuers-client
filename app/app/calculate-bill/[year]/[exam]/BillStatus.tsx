@@ -65,7 +65,6 @@ export default function BillStatus() {
     ]
 
     const findStatus = (index: number) => {
-        console.log(currBillStatus);
         if (currBillStatus != undefined) {
             if ((index) < currBillStatus?.exam_bill_position) {
                 return "approved";

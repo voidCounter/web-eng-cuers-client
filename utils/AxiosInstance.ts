@@ -6,6 +6,6 @@ export const AxiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_BACKEND_API,
     headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${useAuthStore.getState().authenticatedSession?.session_id}`
+        "Authorization": `Bearer ${useAuthStore.getState().authenticatedSession?.session_id}`,
     },
 });

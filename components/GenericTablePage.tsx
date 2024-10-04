@@ -3,28 +3,43 @@ import React from "react";
 import {DataTable} from "@/components/ui/data-table";
 import {toast} from "sonner";
 import Loading from "@/components/loading";
+import {
+    subColumns
+} from "@/app/app/exam-activities/[year]/[exam]/ExamActivitiesColumn";
+import {
+    ExpandedDataTable
+} from "@/app/app/exam-activities/[year]/[exam]/ExamActivitiesExpandedDataTable";
 
-interface GenericTableProps<T> {
+interface GenericTableProps<T, T1> {
     columns: any;
+    subColumns?: any;
     newRow: T;
+    newSubRow?: T1;
     data: T[] | undefined;
+    showAddButton?: boolean;
     isLoading: boolean;
+    showPagination?: boolean;
+    isExpanded?: boolean;
     isError: boolean;
     createMutation: any;
     updateMutation: any;
     deleteMutation: any;
 }
 
-const GenericTable = <T, >({
-                               columns,
-                               newRow,
-                               data,
-                               isLoading,
-                               isError,
-                               createMutation,
-                               updateMutation,
-                               deleteMutation,
-                           }: GenericTableProps<T>) => {
+const GenericTable = <T, T1>({
+                                 columns,
+                                 subColumns,
+                                 newRow,
+                                 newSubRow,
+                                 data,
+                                 isExpanded,
+                                 showPagination, showAddButton,
+                                 isLoading,
+                                 isError,
+                                 createMutation,
+                                 updateMutation,
+                                 deleteMutation,
+                             }: GenericTableProps<T, T1>) => {
 
     const handleCreate = async (newRow: T): Promise<T | undefined> => {
         try {
@@ -82,16 +97,27 @@ const GenericTable = <T, >({
         return null;
     }
 
-    return (
-        <DataTable
-            columns={columns}
-            newRow={newRow}
-            onCreate={handleCreate}
-            onUpdate={handleUpdate}
-            onDelete={handleDelete}
-            defaultData={data ?? []}
-        />
-    );
+    if (!isExpanded) {
+        return (
+            <DataTable
+                columns={columns}
+                newRow={newRow}
+                showPagination={showPagination}
+                showAddButton={showAddButton}
+                showSpacerBelow={true}
+                onCreate={handleCreate}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+                defaultData={data ?? []}
+            />
+        );
+    }
+    return <ExpandedDataTable columns={columns} newSubRow={newSubRow}
+                              newRow={newRow}
+                              subColumns={subColumns as any}
+                              defaultData={data ?? []} onCreate={createMutation}
+                              onUpdate={updateMutation}
+                              onDelete={deleteMutation}/>
 };
 
 export default GenericTable;

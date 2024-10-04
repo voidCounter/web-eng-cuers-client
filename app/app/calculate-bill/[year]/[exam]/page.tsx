@@ -10,6 +10,7 @@ import {useAuthStore} from "@/store/AuthStore";
 import {fetchData} from "@/utils/fetchData";
 import BillPdf from "@/app/app/calculate-bill/[year]/[exam]/BillPdf";
 import BillStatus from "@/app/app/calculate-bill/[year]/[exam]/BillStatus";
+import Loading from "@/components/loading";
 
 
 function parseExamPath(url: string) {
@@ -50,15 +51,16 @@ export default function BillPage() {
 
     }, [evaluatorExamInfo]);
 
-    const {data: bill_info, isSuccess: billDataFetched} = useQuery({
+    const {
+        data: bill_info,
+        isLoading: bill_info_loading,
+        isSuccess: billDataFetched
+    } = useQuery({
         queryKey: [examName, year, authenticatedSession?.user?.user_id],
         queryFn: () => fetchData(`/cuers/calculate-bill/${currExamInfo?.exam_id}/${currExamInfo?.academic_session_id}`),
         enabled: currExamInfo != undefined,
     })
-
-    if (billDataFetched) {
-        console.log(bill_info);
-    }
+    if (bill_info_loading) return <Loading text={"Fetching bill data"}/>
 
     return (<div className={"w-full flex justify-center mt-4"}>
         <Tabs defaultValue="bill"

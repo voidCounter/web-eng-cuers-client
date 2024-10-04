@@ -3,7 +3,6 @@
 import {
     ColumnDef,
     getCoreRowModel,
-    getExpandedRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
@@ -23,7 +22,7 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table";
-import {useState} from "react";
+import React, {useState} from "react";
 import {DataTablePagination} from "@/components/ui/DataTablePagination";
 import {DataTableViewOptions} from "@/components/ui/DataTableViewOptions";
 import FooterCell from "@/components/table/FooterCell";
@@ -31,30 +30,32 @@ import {useQueries} from "@tanstack/react-query";
 import {QueryKey} from "@/utils/queryKeys";
 import {handleSelectOptions} from "@/utils/SelectOptionsHandler";
 import {fetchData} from "@/utils/fetchData";
+import {DataTable} from "@/components/ui/data-table";
+import {
+    subColumns
+} from "@/app/app/exam-activities/[year]/[exam]/ExamActivitiesColumn";
+import {Collapsible, CollapsibleContent} from "@/components/ui/collapsible";
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData, TValue, T1Data, T2Value> {
     columns: ColumnDef<TData, TValue>[]
+    subColumns?: ColumnDef<T1Data, T2Value>[]
     newRow: TData,
-    viewOptions?: boolean,
-    showPagination?: boolean,
-    showAddButton?: boolean,
-    showSpacerBelow?: boolean,
+    newSubRow?: T1Data,
     defaultData: TData[],
     onCreate: (newRow: TData) => Promise<TData | undefined>,
     onUpdate: (updatedRow: TData) => Promise<TData | undefined>
     onDelete: (row: TData) => Promise<TData | undefined>
 }
 
-export function DataTable<TData, TValue>({
-                                             columns,
-                                             viewOptions = true,
-                                             showSpacerBelow = true,
-                                             showPagination = true,
-                                             showAddButton = true,
-                                             defaultData,
-                                             onUpdate, onCreate, onDelete,
-                                             newRow,
-                                         }: DataTableProps<TData, TValue>) {
+export function ExpandedDataTable<TData, TValue, T1Data, T2Value>({
+                                                                      columns,
+                                                                      newSubRow,
+                                                                      defaultData,
+                                                                      onUpdate,
+                                                                      onCreate,
+                                                                      onDelete,
+                                                                      newRow,
+                                                                  }: DataTableProps<TData, TValue, T1Data, T2Value>) {
     const [data, setData] = useState(() => [...defaultData]);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -84,6 +85,7 @@ export function DataTable<TData, TValue>({
         })
     })
     const [editedRows, setEditedRows] = useState({});
+    const [expanded, setExpanded] = React.useState<Array<string>>([]);
 
     const table = useReactTable({
         data, columns, getCoreRowModel: getCoreRowModel(),
@@ -91,14 +93,13 @@ export function DataTable<TData, TValue>({
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
         autoResetPageIndex: false,
-        getExpandedRowModel: getExpandedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         onColumnVisibilityChange: setColumnVisibility,
         onRowSelectionChange: setRowSelection,
         getSortedRowModel: getSortedRowModel(),
         state: {
             sorting,
-            columnFilters, columnVisibility, rowSelection
+            columnFilters, columnVisibility, rowSelection,
         },
         meta: {
             addRow: async (newRow: TData) => {
@@ -157,7 +158,14 @@ export function DataTable<TData, TValue>({
                         return row;
                     }))
             },
-            editedRows, setEditedRows
+            editedRows, setEditedRows,
+            expanded, setExpanded: (id: string) => {
+                if (expanded.includes(id)) {
+                    setExpanded(expanded.filter((item) => item != id));
+                } else {
+                    setExpanded([...expanded, id]);
+                }
+            }
         }
     })
     return (
@@ -174,13 +182,8 @@ export function DataTable<TData, TValue>({
                 {/*/>*/}
                 <div
                     className={"flex flex-row gap-2 justify-between w-full"}>
-                    {
-                        showAddButton &&
-                        <FooterCell table={table} newRow={newRow}/>
-                    }
-                    {
-                        viewOptions && <DataTableViewOptions table={table}/>
-                    }
+                    <FooterCell table={table} newRow={newRow}/>
+                    <DataTableViewOptions table={table}/>
                 </div>
             </div>
             <div className={"rounded-lg border"}>
@@ -205,17 +208,40 @@ export function DataTable<TData, TValue>({
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}
-                                                   className={"text-base"}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
+                                <>
+                                    <TableRow
+                                        key={row.id}
+                                        data-state={row.getIsSelected() && "selected"}
+                                    >
+                                        {row.getVisibleCells().map((cell) => (
+                                            <TableCell key={cell.id}
+                                                       className={"text-bold"}>
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                    <TableCell
+                                        colSpan={row.getVisibleCells().length}
+                                        className={""}>
+
+                                        <Collapsible
+                                            open={expanded.includes(row.id)}
+                                            onOpenChange={() => setExpanded}>
+                                            <CollapsibleContent>
+                                                <DataTable
+                                                    columns={subColumns as any}
+                                                    newRow={newSubRow as any}
+                                                    showPagination={false}
+                                                    viewOptions={false}
+                                                    defaultData={row.original.factor_information as any}
+                                                    onCreate={() => onCreate}
+                                                    showSpacerBelow={false}
+                                                    onUpdate={onUpdate}
+                                                    onDelete={onDelete}/>
+                                            </CollapsibleContent>
+                                        </Collapsible>
+                                    </TableCell>
+                                </>
                             ))
                         ) : (
                             <TableRow>
@@ -228,14 +254,8 @@ export function DataTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
-            {
-                showPagination &&
-                <DataTablePagination table={table} className={"mt-4"}/>
-            }
-            {
-                showSpacerBelow &&
-                <div className={"py-16"}></div>
-            }
+            <DataTablePagination table={table} className={"mt-4"}/>
+            <div className={"py-16"}></div>
         </div>
     );
 }

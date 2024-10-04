@@ -10,7 +10,7 @@ import {ExamInfoType} from "@/types/ExamInfoType";
 import {generateSlug} from "@/utils/slugGenerator";
 
 
-export const generateNavItems = (role: RoleType, examInfo?: ExamInfoType[]): NavConfigType => {
+export const generateNavItems = (role: RoleType, passedExamInfo?: ExamInfoType[] | TeacherRoleInExamCommitteeInfoType[]): NavConfigType => {
     console.log("Current roel", role);
     switch (role) {
         case "chairman":
@@ -21,10 +21,45 @@ export const generateNavItems = (role: RoleType, examInfo?: ExamInfoType[]): Nav
         case "account-chief":
         case "section-officer":
             return staffNavItems;
-        case "chairman-of-exam-committee":
+        case "chairman-of-exam-committee": {
+            let cecNavItems: NavConfigType = {navItems: []};
+            const examInfo = passedExamInfo as TeacherRoleInExamCommitteeInfoType[];
+            if (examInfo) {
+                console.log("to generate dynamic nav items: ", examInfo);
+                const yearGroups: Record<string, {
+                    label: string,
+                    path: string
+                }[]> = {};
+                examInfo.forEach((exam) => {
+                    const year = exam.exam_session;
+
+                    if (!yearGroups[year]) {
+                        yearGroups[year] = [];
+                    }
+
+                    // Push the exam into the respective year's group
+                    yearGroups[year].push({
+                        label: `${exam.session} ${exam.exam_name}`,
+                        path: `/app/exam-activities/${year}/${exam.session}-${generateSlug(exam.exam_name, " ")}`
+                    });
+                    console.log("Year group is: ", yearGroups);
+                    cecNavItems.navItems = [];
+                    Object.keys(yearGroups).forEach((year) => {
+                        cecNavItems.navItems.push({
+                            label: year,
+                            icon: CalendarFoldIcon,
+                            path: `/app/exam-activities/${year}`,
+                            subItems: yearGroups[year] // Add the grouped exams as subItems
+                        });
+                    });
+                });
+            }
+            console.log(cecNavItems);
             return cecNavItems;
+        }
         case "evaluator": {
             let evaluatorNavItems: NavConfigType = {navItems: []};
+            const examInfo = passedExamInfo as ExamInfoType[];
             if (examInfo) {
                 // Group exams by year (exam_session)
                 const yearGroups: Record<string, {
@@ -40,6 +75,7 @@ export const generateNavItems = (role: RoleType, examInfo?: ExamInfoType[]): Nav
                     }
 
                     // Push the exam into the respective year's group
+                    evaluatorNavItems.navItems = [];
                     yearGroups[year].push({
                         label: `${exam.session} ${exam.exam_name}`,
                         path: `/app/calculate-bill/${year}/${exam.session}-${generateSlug(exam.exam_name, " ")}`
