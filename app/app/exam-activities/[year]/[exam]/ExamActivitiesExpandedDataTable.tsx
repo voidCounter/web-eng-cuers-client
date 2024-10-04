@@ -233,8 +233,10 @@ export function ExpandedDataTable<TData, TValue, T1Data, T2Value>({
                                                     newRow={newSubRow as any}
                                                     showPagination={false}
                                                     viewOptions={false}
-                                                    defaultData={row.original.factor_information as any}
-                                                    onCreate={() => onCreate}
+                                                    defaultData={(row.original as {
+                                                        factor_information: []
+                                                    }).factor_information}
+                                                    onCreate={onCreate}
                                                     showSpacerBelow={false}
                                                     onUpdate={onUpdate}
                                                     onDelete={onDelete}/>
