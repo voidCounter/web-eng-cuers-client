@@ -1,5 +1,5 @@
 "use client";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {cn} from "@/lib/utils";
 import {Accordion} from "@/components/ui/accordion";
 import LoggedInUserMenu from "@/components/LoggedInUserMenu";
@@ -17,27 +17,18 @@ export function Nav({className}: { className?: string }) {
         useAuthStore.persist.rehydrate();
     };
     const {setRoles, setCurrentRole, currentRole} = useRoleStore();
+    const [sessionLoaded, setSessionLoaded] = useState(false);
 
-    useEffect(() => {
-        document.addEventListener("visibilitychange", updateStore);
-        window.addEventListener("focus", updateStore);
-        return () => {
-            document.removeEventListener("visibilitychange", updateStore);
-            window.removeEventListener("focus", updateStore);
-        };
-    }, [currentRole]);
-
-
-    // fetching the roles of the currently loggedin user
     const {
         data: roles,
         isLoading: rolesDataLoading,
         isFetching: rolesDataFetching,
+        refetch,
         isSuccess: rolesFetched
     } = useQuery({
-        queryKey: ["roles-", authenticatedSession?.user?.user_id],
-        queryFn: async (): Promise<RolesType> => await AxiosInstance.get("/cuers").then((response) => {
-            console.log(response);
+        queryKey: ["roles-", authenticatedSession?.session_id],
+        queryFn: (): Promise<RolesType> => AxiosInstance.get("/cuers").then((response) => {
+            console.log("Response I get: ", response);
             if (response.data) {
                 setRoles(response.data.roles);
                 let isCurrentRolePresent: boolean = false;
@@ -58,13 +49,24 @@ export function Nav({className}: { className?: string }) {
                 return response.data.roles;
             }
         }),
+        enabled: false
         // refetchOnWindowFocus: false,
         // refetchOnReconnect: false,
         // refetchOnMount: false,
     });
+
+    useEffect(() => {
+        if (authenticatedSession?.session_id && !sessionLoaded) {
+            console.log("Session loaded. Refetching roles...");
+            refetch(); // Trigger the query manually
+            setSessionLoaded(true); // Prevent re-triggering
+        }
+    }, [authenticatedSession, refetch, sessionLoaded]);
+
     if (rolesDataLoading || rolesDataFetching) {
         return <Loading text={""}/>
     }
+
     return (
         <div
             className={`w-full ${cn(className)} h-full flex flex-col justify-between`}>

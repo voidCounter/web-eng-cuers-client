@@ -42,14 +42,14 @@ export default function BillPdfTable({styles, billInfo}: BillPdfTableProps) {
             </View>
             <View style={[]}>
                 {activityList.map((item, index) => {
-                    console.log(item.exam_activity_type, item.bill_sector)
+                    // console.log(item.exam_activity_type, item.bill_sector)
                     let matchedBill = null;
                     const matchedBills = billInfo.filter(
                         (bill) => bill.exam_activity_type_id === item.exam_activity_type);
                     if (matchedBills.length > 1) {
                         matchedBill = matchedBills.filter((bill) => bill.bill_sector_id == item.bill_sector)[0];
                     }
-                    console.log(matchedBill?.bill_sector_id, matchedBill?.exam_activity_type_id)
+                    // console.log(matchedBill?.bill_sector_id, matchedBill?.exam_activity_type_id)
                     if (item.noEntry) {
                         return (
                             <View key={index} style={styles.tableRow}>
