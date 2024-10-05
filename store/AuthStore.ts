@@ -2,6 +2,7 @@ import {UserType} from "@/types/UserType";
 import {create} from "zustand";
 import {persist} from "zustand/middleware";
 import {AuthenticatedSessionType} from "@/types/AuthenticatedSessionType";
+import {withStorageDOMEvents} from "@/hooks/WithStorageDOMEvents";
 
 interface AuthStore {
     authenticatedSession: AuthenticatedSessionType | null,

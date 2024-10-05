@@ -172,12 +172,8 @@ export default function BillPdf({
     const [billSubmitDialogOpen, setBillSubmitDialogOpen] = useState(false);
     const {evaluatorExamInfo} = useEvaluatorExamInfoStore();
     const {authenticatedSession} = useAuthStore();
-    console.log(billInfo);
     const groupedData = groupBillData(billInfo);
-    console.log(groupedData);
-    console.log(groupedData);
     const {
-        setTeacherInfo,
         setExamInfo,
         setUserInfo,
         setDepartment,

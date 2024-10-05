@@ -9,6 +9,7 @@ import TableCellCmp from "@/components/table/TableCell";
 import EditCellCmp from "@/components/table/EditCell";
 import {ExamBillType} from "@/types/ExamBillType";
 import ViewBillPdfCellCmp from "@/app/app/check-bills/ViewBillPdfCellCmp";
+import {QueryKey} from "@/utils/queryKeys";
 
 
 export const columns: ColumnDef<ExamBillType>[] = [
@@ -49,6 +50,10 @@ export const columns: ColumnDef<ExamBillType>[] = [
         meta: {
             type: "text",
             language: "English",
+            fetchOptionsInfo: {
+                fetch_url: "/exam",
+                key: QueryKey.EXAM
+            }
         }
     },
     {

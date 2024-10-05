@@ -15,6 +15,9 @@ interface OptionStoreType {
 export const useOptionStore = create<OptionStoreType>()(persist((set) => ({
     options: {
         [QueryKey.ACTIVITY_TYPE]: [],
+        [QueryKey.COURSES]: [],
+        [QueryKey.EXAM]: [],
+        [QueryKey.TEACHERS]: [],
         [QueryKey.BILL_SECTORS]: [],
         [QueryKey.BILLING_RULES]: []
     },

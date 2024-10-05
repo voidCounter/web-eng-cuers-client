@@ -7,7 +7,7 @@ import {columns} from "@/app/app/check-bills/columns";
 import {useEffect, useState} from "react";
 import {useRoleStore} from "@/store/RoleStore";
 
-export default function BillingActivityTypes() {
+export default function CheckBillsPage() {
 
     const [data, setData] = useState<ExamBillType[]>();
     const {currentRole} = useRoleStore.getState();
@@ -65,11 +65,14 @@ export default function BillingActivityTypes() {
         <div>
             {
                 data &&
-                <GenericTable columns={columns} newRow={null}
-                              data={data} isLoading={isLoading}
-                              isError={isError} createMutation={createMutation}
-                              updateMutation={updateMutation}
-                              deleteMutation={deleteMutation}/>
+                <GenericTable
+                    showAddButton={false}
+                    showPagination={false}
+                    columns={columns} newRow={null}
+                    data={data} isLoading={isLoading}
+                    isError={isError} createMutation={createMutation}
+                    updateMutation={updateMutation}
+                    deleteMutation={deleteMutation}/>
             }
         </div>
     );

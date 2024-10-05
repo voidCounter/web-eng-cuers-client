@@ -4,6 +4,8 @@ import {BillSectorType} from "@/app/app/billing-sectors/columns";
 import {useOptionStore} from "@/store/OptionStore";
 import {Option} from "commander";
 import {ExamActivityType} from "@/app/app/billing-activity-types/columns";
+import {TeacherPersonalInfo, TeacherType} from "@/types/TeacherType";
+import {CourseType} from "@/types/Course";
 
 export const handleSelectOptions = (key: QueryKey, data: any[]): OptionType[] => {
     const {options, setOptions} = useOptionStore.getState();
@@ -21,6 +23,25 @@ export const handleSelectOptions = (key: QueryKey, data: any[]): OptionType[] =>
                 label: rule.name,
                 value: rule.id
             }));
+            break;
+        case QueryKey.EXAM:
+            mappedOptions = data.map((exam: any) => ({
+                label: exam.examName,
+                value: exam.exam_id
+            }))
+            break;
+        case QueryKey.TEACHERS:
+            mappedOptions = data.map((teacher: TeacherPersonalInfo) => ({
+                label: teacher.title_bn + " " + teacher.first_name_bn + " " + teacher.last_name_bn,
+                value: teacher.teacher_id
+            }));
+            break;
+        case QueryKey.COURSES:
+            mappedOptions = data.map((course: CourseType) => ({
+                label: course.course_code + "-" + course.course_title,
+                value: course.course_id
+            }));
+            mappedOptions.push({label: "None", value: "None"});
             break;
         case QueryKey.ACTIVITY_TYPE:
             mappedOptions = data.map((activity: ExamActivityType) => ({

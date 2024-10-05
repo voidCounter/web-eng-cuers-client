@@ -1,7 +1,6 @@
 import {ExamInfoType} from "@/types/ExamInfoType";
 import {create} from "zustand";
 import {persist} from "zustand/middleware";
-import {Exam} from "@/types/ExamType";
 
 interface EvaluatorExamInfoStore {
     evaluatorExamInfo: ExamInfoType[],

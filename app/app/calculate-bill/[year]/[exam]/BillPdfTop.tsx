@@ -4,7 +4,6 @@ import {useBillPdfDataStore} from "@/store/BillPdfDataStore";
 import {UserType} from "@/types/UserType";
 import {ExamInfoType} from "@/types/ExamInfoType";
 import {DepartmentType} from "@/types/DepartmentType";
-import {TeacherType} from "@/types/TeacherType";
 import {formatDateString} from "@/utils/formatDate";
 
 interface BillPdfTopProps {
@@ -25,7 +24,6 @@ export default function BillPdfTop({
     const evaluatorExamInfo = examInfo as ExamInfoType;
     const evaluatorDeptInfo = department as DepartmentType;
     const evaluatorUniInfo = university as UniversityType;
-    console.log("Exam info: ", evaluatorExamInfo);
 
     return (
         <View>
@@ -120,7 +118,7 @@ export default function BillPdfTop({
                         >
                             <Text style={styles.tableCell}>
                                 ইংরেজি (বড় অক্ষরে) :{' '}
-                                {`${evaluatorInfo?.first_name.toUpperCase() ?? " "} ${evaluatorInfo?.last_name.toUpperCase()} `}
+                                {`${evaluatorInfo?.first_name?.toUpperCase() ?? " "} ${evaluatorInfo?.last_name?.toUpperCase()} `}
                             </Text>
                         </View>
                         <View
