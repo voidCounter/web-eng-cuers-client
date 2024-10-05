@@ -179,6 +179,7 @@ export default function BillPdf({
         setDepartment,
         setUniversity
     } = useBillPdfDataStore();
+    console.log(billInfo);
 
     useEffect(() => {
         setExamInfo(currExamInfo as ExamInfoType);
