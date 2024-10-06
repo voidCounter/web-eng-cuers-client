@@ -44,7 +44,7 @@ export default function ExamActivities({
         isError
     } = useTable<ExamActivityType>(`/cuers/evaluates-activity/${currExamInfo?.exam_id}`);
     if (isLoading) {
-        return <Loading text={"Loading Billing Rules"}/>
+        return <Loading text={"Loading Activities"}/>
     }
     console.log(data);
     return (
