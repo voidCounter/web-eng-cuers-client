@@ -11,6 +11,7 @@ export type BillExamActivity = {
     bill_sector_id: number;
     bill_sector_name: string;
     course_id: string;
+    course_code: string;
     department_id: number;
     exam_activity_type_id: number;
     exam_activity_name: string;
@@ -30,6 +31,7 @@ export type BillGroupedExamActivity = {
     last_calculated: string;
     calculation_status: string;
     course_id: string;
+    course_code: string;
     department_id: number;
     academic_session_id: number;
     exam_id: number;
