@@ -61,12 +61,14 @@ export const activityList: ActivityListType[] = [
         parent: '4',
         row: 'প্রশ্নপত্র লিখন',
         exam_activity_type: 10,
+        bill_sector: 18,
         no: '4',
     },
     {
         parent: '5',
         row: 'প্রশ্নপত্র ফটোকপি',
         exam_activity_type: 11,
+        bill_sector: 18,
         no: '5',
     },
     {
@@ -80,7 +82,7 @@ export const activityList: ActivityListType[] = [
         parent: '6',
         row: 'তত্ত্বীয় কোর্স',
         exam_activity_type: 4,
-        bill_sector: 1,
+        bill_sector: 10,
         no: '6.1',
     },
     {
@@ -121,7 +123,8 @@ export const activityList: ActivityListType[] = [
     {
         parent: '7',
         row: 'মৌখিক পরীক্ষা',
-        exam_activity_type: 7,
+        exam_activity_type: 6,
+        bill_sector: 10,
         no: '7',
     },
     {
@@ -173,6 +176,7 @@ export const activityList: ActivityListType[] = [
     },
     {
         parent: '10',
+        bill_sector: 17,
         row: 'টেবুলেশন',
         exam_activity_type: 9,
         no: '10',
@@ -182,23 +186,27 @@ export const activityList: ActivityListType[] = [
         row: 'গ্রেডসিট লিখন',
         exam_activity_type: 12,
         no: '11',
+        bill_sector: 17
     },
     {
         parent: '12',
         row: 'গ্রেডসিট যাচাইকরণ',
         exam_activity_type: 13,
+        bill_sector: 16,
         no: '12',
     },
     {
         parent: '13',
         row: 'থিসিস গাইড/সুপারভিশন',
         exam_activity_type: 8,
+        bill_sector: 17,
         no: '13',
     },
     {
         parent: '14',
         row: 'সভাপতির সম্মানী ভাতা',
         exam_activity_type: 14,
+        bill_sector: 8,
         no: '14',
     },
     {

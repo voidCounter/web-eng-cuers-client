@@ -92,6 +92,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: "0.5px 0.5px 0.5px 4px",
     },
+    smallTableCell: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "0.5px 0.5px 0.5px 4px",
+        fontSize: "6px",
+    },
     leftAligned: {
         textAlign: "left",
     },
@@ -173,6 +180,7 @@ export default function BillPdf({
     const {evaluatorExamInfo} = useEvaluatorExamInfoStore();
     const {authenticatedSession} = useAuthStore();
     const groupedData = groupBillData(billInfo);
+    console.log("Grouped data: ", groupedData);
     const {
         setExamInfo,
         setUserInfo,

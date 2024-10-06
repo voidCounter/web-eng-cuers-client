@@ -43,12 +43,9 @@ export default function BillPdfTable({styles, billInfo}: BillPdfTableProps) {
             <View style={[]}>
                 {activityList.map((item, index) => {
                     // console.log(item.exam_activity_type, item.bill_sector)
-                    let matchedBill = null;
-                    const matchedBills = billInfo.filter(
-                        (bill) => bill.exam_activity_type_id === item.exam_activity_type);
-                    if (matchedBills.length > 1) {
-                        matchedBill = matchedBills.filter((bill) => bill.bill_sector_id == item.bill_sector)[0];
-                    }
+                    const matchedBill = billInfo.filter(
+                        (bill) => bill.exam_activity_type_id === item.exam_activity_type && bill.bill_sector_id === item.bill_sector)[0];
+
                     // console.log(matchedBill?.bill_sector_id, matchedBill?.exam_activity_type_id)
                     if (item.noEntry) {
                         return (
@@ -127,11 +124,11 @@ export default function BillPdfTable({styles, billInfo}: BillPdfTableProps) {
                                         },
                                     ]}
                                 >
-                                    <Text style={styles.tableCell}>
-                                        {matchedBill && matchedBill.course_id
-                                            ? matchedBill.course_id.length > 22
-                                                ? matchedBill.course_id.slice(0, 21) + "..."
-                                                : matchedBill.course_id
+                                    <Text style={styles.smallTableCell}>
+                                        {matchedBill && matchedBill.course_code
+                                            ? matchedBill.course_code.length > 25
+                                                ? matchedBill.course_code.slice(0, 25) + "..."
+                                                : matchedBill.course_code
                                             : ""}
                                     </Text>
                                 </View>
@@ -149,7 +146,7 @@ export default function BillPdfTable({styles, billInfo}: BillPdfTableProps) {
                                             ? matchedBill.factors
                                                 .filter(factor => factor.factor.match(/(খাতা|ছাত্র|পৃষ্ঠা)/))
                                                 .map(factor =>
-                                                    !toEnglishNumber(factor.quantity).includes('0') ? factor.quantity : ""
+                                                    !toEnglishNumber(factor.quantity).includes('0') ? toBanglaNumber(factor.quantity) : ""
                                                 ).join(', ')
                                             : ""}
                                     </Text>
@@ -168,7 +165,7 @@ export default function BillPdfTable({styles, billInfo}: BillPdfTableProps) {
                                             ? matchedBill.factors
                                                 .filter(factor => factor.factor.match(/ঘণ্টা/))
                                                 .map(factor =>
-                                                    !toEnglishNumber(factor.quantity).includes('0') ? factor.quantity : ""
+                                                    !toEnglishNumber(factor.quantity).includes('0') ? toBanglaNumber(factor.quantity) : ""
                                                 ).join(', ')
                                             : ""}
                                     </Text>
@@ -187,7 +184,7 @@ export default function BillPdfTable({styles, billInfo}: BillPdfTableProps) {
                                             ? matchedBill.factors
                                                 .filter(factor => factor.factor.match(/দিন|সদস্য|পরীক্ষা/))
                                                 .map(factor =>
-                                                    !toEnglishNumber(factor.quantity).includes('0') ? factor.quantity : ""
+                                                    !toEnglishNumber(factor.quantity).includes('0') ? toBanglaNumber(factor.quantity) : ""
                                                 ).join(', ')
                                             : ""}
                                     </Text>
@@ -219,7 +216,7 @@ export default function BillPdfTable({styles, billInfo}: BillPdfTableProps) {
                                 >
                                     <Text style={styles.tableCell}>
                                         {matchedBill && matchedBill?.calculation_amount
-                                            ? matchedBill.calculation_amount
+                                            ? toBanglaNumber(matchedBill.calculation_amount)
                                             : ""}
                                     </Text>
                                 </View>

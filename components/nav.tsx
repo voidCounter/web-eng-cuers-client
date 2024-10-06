@@ -49,19 +49,19 @@ export function Nav({className}: { className?: string }) {
                 return response.data.roles;
             }
         }),
-        enabled: false
+        enabled: authenticatedSession != undefined,
         // refetchOnWindowFocus: false,
         // refetchOnReconnect: false,
         // refetchOnMount: false,
     });
 
-    useEffect(() => {
-        if (authenticatedSession?.session_id && !sessionLoaded) {
-            console.log("Session loaded. Refetching roles...");
-            refetch(); // Trigger the query manually
-            setSessionLoaded(true); // Prevent re-triggering
-        }
-    }, [authenticatedSession, refetch, sessionLoaded]);
+    // useEffect(() => {
+    //     if (authenticatedSession?.session_id && !sessionLoaded) {
+    //         console.log("Session loaded. Refetching roles...");
+    //         refetch(); // Trigger the query manually
+    //         setSessionLoaded(true); // Prevent re-triggering
+    //     }
+    // }, [authenticatedSession, refetch, sessionLoaded]);
 
     if (rolesDataLoading || rolesDataFetching) {
         return <Loading text={""}/>

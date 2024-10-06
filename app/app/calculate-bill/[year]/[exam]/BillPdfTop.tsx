@@ -25,6 +25,8 @@ export default function BillPdfTop({
     const evaluatorDeptInfo = department as DepartmentType;
     const evaluatorUniInfo = university as UniversityType;
 
+    console.log(evaluatorInfo, evaluatorDeptInfo);
+
     return (
         <View>
             <View style={[styles.topPart, {marginBottom: '0px'}]}>
