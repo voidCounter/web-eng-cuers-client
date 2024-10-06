@@ -1,7 +1,5 @@
 "use client";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import BillPdf from "@/app/app/calculate-bill/[year]/[exam]/BillPdf";
-import BillStatus from "@/app/app/calculate-bill/[year]/[exam]/BillStatus";
 import ExamActivities
     from "@/app/app/exam-activities/[year]/[exam]/ExamActivities";
 import ActivityReport
@@ -11,10 +9,9 @@ import {usePathname} from "next/navigation";
 import {useCECExamInfoStore} from "@/store/CECExamInfoStore";
 import {useAuthStore} from "@/store/AuthStore";
 import {useEffect, useState} from "react";
-import {ExamInfoType} from "@/types/ExamInfoType";
 import {generateSlug} from "@/utils/slugGenerator";
-import {useQuery} from "@tanstack/react-query";
-import {fetchData} from "@/utils/fetchData";
+import BillStatement
+    from "@/app/app/exam-activities/[year]/[exam]/BillStatement";
 
 
 function parseExamPath(url: string) {
@@ -62,6 +59,8 @@ export default function ExamActivitiesPage() {
                     " h-full"}>Exam Activities</TabsTrigger>
                 <TabsTrigger value="bills"
                              className={"w-full h-full"}>Bills</TabsTrigger>
+                <TabsTrigger value={"bill-statement"} className={"w-full" +
+                    " h-full"}>Bill statement</TabsTrigger>
                 <TabsTrigger value="generate-activity-report"
                              className={"w-full h-full"}>Activity
                     Report</TabsTrigger>
@@ -73,6 +72,10 @@ export default function ExamActivitiesPage() {
                          className={"w-full"}><CheckBillsPage/></TabsContent>
             <TabsContent value="generate-activity-report"
                          className={"w-full"}><ActivityReport/></TabsContent>
+            <TabsContent value="bill-statement" className={"w-full"}>
+                <BillStatement currExamInfo={currExamInfo}/>
+            </TabsContent>
+
         </Tabs>
     )
         ;
