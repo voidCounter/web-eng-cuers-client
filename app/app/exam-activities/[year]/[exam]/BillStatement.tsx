@@ -166,12 +166,13 @@ export default function BillStatement({currExamInfo}: BillStatementProps) {
     });
 
     const [billStatementText, setBillStatementText] = useState<string>("");
+    const [billStatementTextSaved, setBillStatementTextSaved] = useState<string>("");
 
     const billStatement = () => {
         return <Document
             title={`Bill statement-${currExamInfo?.session}-${currExamInfo?.exam_name}`}>
             <Page size={{width: 612, height: 1008}} style={styles.pageCol}>
-                <BillStatementPdf bill_statement_text={billStatementText}
+                <BillStatementPdf bill_statement_text={billStatementTextSaved}
                                   styles={styles}
                                   bill_statement_info={billStatementInfo ?? []}/>
             </Page>
@@ -180,7 +181,8 @@ export default function BillStatement({currExamInfo}: BillStatementProps) {
     return (
         <div className={"w-full h-full"}>
             <Textarea value={billStatementText}
-                      onBlur={(e) => setBillStatementText(e.target.value)}/>
+                      onChange={(e) => setBillStatementText(e.target.value)}
+                      onBlur={(e) => setBillStatementTextSaved(e.target.value)}/>
             <PDFViewer className={"w-full h-[800px]"}>
                 {billStatement()}
             </PDFViewer>
