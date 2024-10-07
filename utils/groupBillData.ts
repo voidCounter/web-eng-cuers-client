@@ -16,7 +16,7 @@ export const groupBillData = (data: BillExamActivity[]): BillGroupedExamActivity
 
         if (existingEntry && (existingEntry.course_code != "" || existingEntry.course_code != null)) {
             // If found, sum the calculation_amount and concatenate the course_id
-            const existingCourseIds = existingEntry?.course_code.split(",");
+            const existingCourseIds = existingEntry?.course_code?.split(",");
             // what if course doesn't exist?
 
             if (!existingCourseIds?.includes(item.course_code) && item.activity_id != existingEntry?.activity_id) {
