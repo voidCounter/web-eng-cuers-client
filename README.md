@@ -1,5 +1,5 @@
 # CUERS
-+ _Note: This is the front-end section of the CUERS (Chittagong University Exam Remuneration System). The back-end section of the system is maintained privately in a shared repository.
++ Note: This is the front-end section of the CUERS (Chittagong University Exam Remuneration System). The back-end section of the system is maintained privately in a shared repository.
 ## Table of Contents
 - [Overview](#overview)
 - [Installation](#installation)
