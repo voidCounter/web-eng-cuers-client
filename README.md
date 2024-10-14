@@ -4,7 +4,6 @@
 - [Overview](#overview)
 - [Installation](#installation)
 - [Features](#features)
-- [Getting Started](#getting-started)
 - [Acknowledgements](#acknowledgements)
 - [Contribution](#contribution)
 ## Overview
@@ -32,21 +31,14 @@ node -v
 ```
 To install either or both of them, please follow the [Node.js](https://nodejs.org/en/download/package-manager "Node.js installation via package manager") and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm "Downloading and installing Node.js and npm") documentations.
 
+
 ## Features
-* Generate full-fledged remuneration bills, by automating bill calculations from provided data.
-* Allow insertion, deletion and/or updating data records dynamically and handling noisy data.
+- Generate full-fledged remuneration bills, by automating bill calculations from provided data.
+- Allow insertion, deletion and/or updating data records dynamically and handling noisy data.
 
 ## Technologies Used
-<div class = "img-display" align = "center">
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" ><img src = "src/assets/javascript.svg" id= "js" height="60px" width="60px"
-/></a>
-<a href="https://tailwindcss.com/"><img src = "src/assets/tailwindcss.svg" id = "twcss" height="60px" width="60px"
-/> </a>
-<a href = "https://react.dev/"><img src = "src/assets/react.svg" id="react" height="60px" width="60px"
-/> </a>
-<a href="https://vitejs.dev/"><img src = "src/assets/vitejs.svg" id="vite" height="60px" width="60px"
-/> </a>
-</div>
+- Next.js
+- TailwindCSS
 
 ## Acknowledgements
 This project has been developed using confidential data records provided by [Dr. Rudra Pratap Deb Nath](https://www.cu.ac.bd/public_profile/index.php?ein=5168), Associate Professor of CSE Dept and [Muhammad Anwarul Azim](https://cu.ac.bd/public_profile/index.php?ein=3904), Professor of CSE Dept of University of Chittagong.
