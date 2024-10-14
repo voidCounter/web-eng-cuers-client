@@ -1,52 +1,55 @@
-# web-eng-cuers-client
+# CUERS
++ _Note: This is the front-end section of the CUERS (Chittagong University Exam Remuneration System). The back-end section of the system is maintained privately in a shared repository.
+## Table of Contents
+- [Overview](#overview)
+- [Installation](#installation)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Acknowledgements](#acknowledgements)
+- [Contribution](#contribution)
+## Overview
+**CUERS** is a web-based digital exam remuneration system with a centralized database, containing all information about the evaluators (teachers) and exam-committee members of each department of the University of Chittagong. In an effort to generate the remuneration forms and subsequently the bills of each evaluator correctly, the system significantly reduces the workload and time needed by digitizing the whole process.
 
-This is a [Next.js](https://nextjs.org) project bootstrapped
-with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Installation
+These instructions will provide you with a local copy of the project for deployment or testing purposes. Make sure to following the steps listed below:
+### Cloning Repository
+1. Clone the repository into your local system:
 ```
+git clone https://github.com/voidCounter/web-eng-cuers-client.git
+```
+2. Navigate to your project directories using the command:
+```
+cd web-eng-cuers-client
+```
+### Installing Dependencies
+1. In your local system, ensure that Node.js & npm are already installed. To check whether they are installed, run the following commands in either your Ubuntu terminal or Windows Command Prompt:
+```
+#Check npm version
+npm -v 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the
-result.
+#Check node version
+node -v
+```
+To install either or both of them, please follow the [Node.js](https://nodejs.org/en/download/package-manager "Node.js installation via package manager") and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm "Downloading and installing Node.js and npm") documentations.
 
-You can start editing the page by modifying `app/page.tsx`. The page
-auto-updates as you edit the file.
+## Features
+* Generate full-fledged remuneration bills, by automating bill calculations from provided data.
+* Allow insertion, deletion and/or updating data records dynamically and handling noisy data.
 
-This project
-uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts)
-to automatically optimize and load [Geist](https://vercel.com/font), a new font
-family for Vercel.
+## Technologies Used
+<div class = "img-display" align = "center">
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" ><img src = "src/assets/javascript.svg" id= "js" height="60px" width="60px"
+/></a>
+<a href="https://tailwindcss.com/"><img src = "src/assets/tailwindcss.svg" id = "twcss" height="60px" width="60px"
+/> </a>
+<a href = "https://react.dev/"><img src = "src/assets/react.svg" id="react" height="60px" width="60px"
+/> </a>
+<a href="https://vitejs.dev/"><img src = "src/assets/vitejs.svg" id="vite" height="60px" width="60px"
+/> </a>
+</div>
 
-## Learn More
+## Acknowledgements
+This project has been developed using confidential data records provided by [Dr. Rudra Pratap Deb Nath](https://www.cu.ac.bd/public_profile/index.php?ein=5168), Associate Professor of CSE Dept and [Muhammad Anwarul Azim](https://cu.ac.bd/public_profile/index.php?ein=3904), Professor of CSE Dept of University of Chittagong.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
-  features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check
-out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your
-feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use
-the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)
-from the creators of Next.js.
-
-Check out
-our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying)
-for more details.
-> > > > > > > 94aed8c (Initial commit from Create Next App)
+## Contribution
+If you would like to contribute to this project, please fork the repository and submit a pull request. When submitting a pull request, please make sure to include unit tests for any new features or bug fixes.
